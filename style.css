@@ -1,0 +1,164 @@
+/*-----------Geral-----------*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+    background-color: #fafafa;
+    color: #333;
+}
+
+header {
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    gap: 2rem;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    padding: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+    color: #1abc9c;
+}
+
+.main-content {
+    padding: 4rem 2rem;
+}
+
+.content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+.main-title {
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 2rem;
+    color: #222;
+}
+
+.subtitle {
+    font-size: 1.25rem;
+    text-align: center;
+    color: #555;
+    margin-bottom: 2rem;
+}
+
+.about-text {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #333;
+    text-align: justify;
+    padding: 0 1rem;
+}
+/*---------------------------*/
+
+/*----------Project----------*/
+.project-image {
+    margin-top: 2rem;
+}
+
+.project-image img {
+    max-width: 90%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.caption {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+.project-description {
+    margin-top: 2rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: justify;
+    line-height: 1.6;
+}
+/*---------------------------*/
+
+/*----------Authors----------*/
+.authors-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+  
+  .author-card {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    padding: 20px;
+    margin: 15px auto;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    background-color: white;
+    width: 600px;
+    height: 250px; /* <-- altura mínima consistente */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+  .author-photo {
+    width: 100px;
+    height: 100px;
+    border: 2px solid #333;
+    border-radius: 50%;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+  
+  .author-card img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #555;
+}
+  
+  .author-info {
+    flex-grow: 1;
+}
+  .author-info h3 {
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: 700;
+}
+  .author-info p {
+    margin: 5px 0 0;
+    font-size: 1em;
+}
+/*---------------------------*/
+  
