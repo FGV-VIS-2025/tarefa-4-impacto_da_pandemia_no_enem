@@ -10,6 +10,7 @@ body {
     text-align: center;
     background-color: #fafafa;
     color: #333;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 header {
@@ -18,6 +19,11 @@ header {
     position: sticky;
     top: 0;
     z-index: 1000;
+}
+
+.navbar {
+    background-color: #1e293b;
+    padding: 1rem;
 }
 
 .navbar ul {
@@ -29,15 +35,15 @@ header {
 }
 
 .navbar a {
+    color: white;
     text-decoration: none;
-    color: #333;
-    font-weight: 600;
-    padding: 0.5rem;
-    transition: color 0.3s ease;
+    font-weight: bold;
+    /*padding: 0.5rem;*/
+    transition: color 0.3s;
 }
 
 .navbar a:hover {
-    color: #1abc9c;
+    color: #38bdf8; 
 }
 
 .main-content {
@@ -161,4 +167,74 @@ header {
     font-size: 1em;
 }
 /*---------------------------*/
+
+/*---------Dark Mode---------*/
+
+body.dark-mode {
+    background-color: #0f172a;
+    color: #f1f5f9;
+}
+
+body.dark-mode header {
+    background-color: #1e293b;
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .navbar {
+    background-color: #334155;
+}
+
+body.dark-mode .navbar a {
+    color: #f1f5f9;
+}
+
+body.dark-mode .navbar a:hover {
+    color: #38bdf8;
+}
+
+body.dark-mode .main-title {
+    color: #e2e8f0;
+}
+
+body.dark-mode .subtitle,
+body.dark-mode .about-text,
+body.dark-mode .project-description,
+body.dark-mode .caption,
+body.dark-mode .author-info p {
+    color: #cbd5e1;
+}
+
+body.dark-mode .author-card {
+    background-color: #1e293b;
+    border-color: #475569;
+}
+
+body.dark-mode .author-photo {
+    border-color: #cbd5e1;
+}
+
+body.dark-mode .author-card img {
+    border-color: #cbd5e1;
+}
+
+#theme-toggle {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #f1f5f9;
+    color: #0f172a;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 140px;
+}
+
+body.dark-mode #theme-toggle {
+    background-color: #1e293b;
+    color: #f1f5f9;
+}
+
   

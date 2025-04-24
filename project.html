@@ -4,7 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Work</title>
-  <link rel="stylesheet" href="style.css" />
+  <script>
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.classList.add('dark-mode');
+    }
+  </script>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
@@ -13,8 +18,9 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="authors.html">Authors</a></li>
         <li><a href="project.html">Project</a></li>
-        <li><a href="https://github.com/" target="_blank">GitHub</a></li>
+        <li><a href="https://github.com/FGV-VIS-2025/tarefa-4-impacto_da_pandemia_no_enem" target="_blank">GitHub</a></li>
       </ul>
+      <button id="theme-toggle">🌙 Modo Escuro</button>
     </nav>
   </header>
 
@@ -33,5 +39,7 @@
       </p>
     </section>
   </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
