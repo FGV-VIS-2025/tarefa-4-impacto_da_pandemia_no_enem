@@ -169,51 +169,50 @@ header {
 /*---------------------------*/
 
 /*---------Dark Mode---------*/
-
-body.dark-mode {
-    background-color: #0f172a;
-    color: #f1f5f9;
+html.dark-mode body {
+  background-color: #0f172a;
+  color: white;
 }
 
-body.dark-mode header {
+html.dark-mode header {
     background-color: #1e293b;
     box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
 }
 
-body.dark-mode .navbar {
+html.dark-mode .navbar {
     background-color: #334155;
 }
 
-body.dark-mode .navbar a {
+html.dark-mode .navbar a {
     color: #f1f5f9;
 }
 
-body.dark-mode .navbar a:hover {
+html.dark-mode .navbar a:hover {
     color: #38bdf8;
 }
 
-body.dark-mode .main-title {
+html.dark-mode .main-title {
     color: #e2e8f0;
 }
 
-body.dark-mode .subtitle,
-body.dark-mode .about-text,
-body.dark-mode .project-description,
-body.dark-mode .caption,
-body.dark-mode .author-info p {
+html.dark-mode .subtitle,
+html.dark-mode .about-text,
+html.dark-mode .project-description,
+html.dark-mode .caption,
+html.dark-mode .author-info p {
     color: #cbd5e1;
 }
 
-body.dark-mode .author-card {
+html.dark-mode .author-card {
     background-color: #1e293b;
     border-color: #475569;
 }
 
-body.dark-mode .author-photo {
+html.dark-mode .author-photo {
     border-color: #cbd5e1;
 }
 
-body.dark-mode .author-card img {
+html.dark-mode .author-card img {
     border-color: #cbd5e1;
 }
 
@@ -232,7 +231,7 @@ body.dark-mode .author-card img {
     width: 140px;
 }
 
-body.dark-mode #theme-toggle {
+html.dark-mode #theme-toggle {
     background-color: #1e293b;
     color: #f1f5f9;
 }
