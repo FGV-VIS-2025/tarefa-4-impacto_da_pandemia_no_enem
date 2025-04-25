@@ -219,10 +219,10 @@ html.dark-mode .author-card img {
     border-color: #cbd5e1;
 }
 
-#theme-toggle {
+#theme-select {
     position: absolute;
     right: 20px;
-    top: 20px;
+    top: 30px;
     padding: 5px 10px;
     border: none;
     border-radius: 8px;
@@ -232,12 +232,16 @@ html.dark-mode .author-card img {
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
     width: 140px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }
 
-html.dark-mode #theme-toggle {
+html.dark-mode #theme-select {
     background-color: #1e293b;
     color: #f1f5f9;
 }
+/*---------------------------*/
 
 
 /*-----------Chart-----------*/
@@ -246,6 +250,28 @@ html.dark-mode #theme-toggle {
     justify-content: center;
     margin: 0 auto; /* Centraliza se o container não for flex */
     max-width: 800px;
+  }
+/*---------------------------*/
+
+
+/*----------Tooltip----------*/
+.tooltip {
+    background: #f1f5f9;
+    color: #1e293b;
+    border: 1px solid #cbd5e1;
+    padding: 8px;
+    border-radius: 4px;
+    pointer-events: none;
+    opacity: 0;
+    position: absolute;
+    font-size: 14px;
+  }
+  
+  /* Tooltip no modo escuro */
+  html.dark-mode .tooltip {
+    background: #1e293b;
+    color: #f1f5f9;
+    border: 1px solid #475569;
   }
 /*---------------------------*/
   
