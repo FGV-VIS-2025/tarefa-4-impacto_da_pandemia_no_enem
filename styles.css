@@ -239,6 +239,10 @@ html.dark-mode #theme-toggle {
     color: #f1f5f9;
 }
 
+html.dark-mode a {
+    color: lightblue; /* Cor ajustada para o tema escuro */
+}
+
 
 /*-----------Chart-----------*/
 #chart-container {
