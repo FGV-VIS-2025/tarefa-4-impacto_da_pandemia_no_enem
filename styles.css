@@ -83,6 +83,7 @@ header {
 }
 /*---------------------------*/
 
+
 /*----------Project----------*/
 .project-image {
     margin-top: 2rem;
@@ -110,6 +111,7 @@ header {
     line-height: 1.6;
 }
 /*---------------------------*/
+
 
 /*----------Authors----------*/
 .authors-container {
@@ -167,6 +169,7 @@ header {
     font-size: 1em;
 }
 /*---------------------------*/
+
 
 /*---------Dark Mode---------*/
 html.dark-mode body {
@@ -236,4 +239,13 @@ html.dark-mode #theme-toggle {
     color: #f1f5f9;
 }
 
+
+/*-----------Chart-----------*/
+#chart-container {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto; /* Centraliza se o container não for flex */
+    max-width: 800px;
+  }
+/*---------------------------*/
   
