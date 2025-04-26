@@ -7,7 +7,10 @@
   <script>
     (function () {
       try {
-        if (localStorage.getItem('theme') === 'dark') {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
           document.documentElement.classList.add('dark-mode');
         }
       } catch (e) {}
@@ -24,7 +27,11 @@
         <li><a href="project.html">Project</a></li>
         <li><a href="https://github.com/FGV-VIS-2025/tarefa-4-impacto_da_pandemia_no_enem" target="_blank">GitHub</a></li>
       </ul>
-      <button id="theme-toggle">🌙 Modo Escuro</button>
+      <select id="theme-select">
+        <option value="auto">🌗 Automático</option>
+        <option value="light">🌞 Claro</option>
+        <option value="dark">🌙 Escuro</option>
+      </select> 
     </nav>
   </header>
 
