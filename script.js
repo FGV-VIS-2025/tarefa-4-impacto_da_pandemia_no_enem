@@ -124,12 +124,13 @@ Promise.all([
     const widthMap = container.node().getBoundingClientRect().width + 10;
     const heightMap = 600;
 
-    // Criar o SVG para o mapa
+    // Cria o SVG para o mapa
     const svgMap = containerMap
         .append("svg")
         .attr("viewBox", `0 0 ${widthMap} ${heightMap}`)
         .attr("preserveAspectRatio", "xMidYMid meet");
-    // Configurar a projeção e o gerador de caminho
+
+    // Configura a projeção e o gerador de caminho
     const projection = d3.geoMercator()
         .scale(3500)
         .center([-45, -18.5]) 
@@ -137,7 +138,7 @@ Promise.all([
 
     const path = d3.geoPath().projection(projection);
 
-    // Carregar os dados GeoJSON
+    // Carrega os dados GeoJSON
     d3.json("./GeoJSON/regioes_minas.json").then(geojson => {
         svgMap.selectAll("path")
             .data(geojson.features)
@@ -148,9 +149,14 @@ Promise.all([
             .attr("stroke", "#333")
             .on("mouseover", function (event, d) {
                 d3.select(this).attr("fill", "#ffcc00");
+                tooltip.transition().style("opacity", 1);
+                tooltip.html(`<strong>${d.properties.nm_meso}</strong><br/>`)
+                .style("left", `${event.pageX + 10}px`)
+                .style("top", `${event.pageY - 28}px`);
             })
             .on("mouseout", function (event, d) {
                 d3.select(this).attr("fill", "#69b3a2"); 
+                tooltip.transition().style("opacity", 0);
             });
         });
 

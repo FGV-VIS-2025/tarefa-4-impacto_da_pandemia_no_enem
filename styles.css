@@ -260,10 +260,8 @@ html.dark-mode a {
 
 /*-----------Map-----------*/
 #map-container {
-    display: flex;
-    justify-content: center;
     margin: 0 auto; 
-    max-width: 800px;
+    /* height: auto; */
   }
 /*---------------------------*/
 
