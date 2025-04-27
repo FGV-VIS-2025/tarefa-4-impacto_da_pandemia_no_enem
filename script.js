@@ -149,7 +149,6 @@ Promise.all([
     // Configuração do botão "Reset Filter" – este botão é livre e posicionado conforme o CSS
     d3.select("#reset-button").on("click", () => {
         updateCharts("all");
-        svgMap.selectAll("path").attr("fill", "#69b3a2");
     });
     
     d3.select("#reset-button").style("display", "block");
