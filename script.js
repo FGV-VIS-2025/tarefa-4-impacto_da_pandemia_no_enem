@@ -146,7 +146,13 @@ Promise.all([
 
     updateCharts("all");
 
-    /*GRÁFICO DE MAPA DE MINAS GERAIS*/
+    // Configuração do botão "Reset Filter" – este botão é livre e posicionado conforme o CSS
+    d3.select("#reset-button").on("click", () => {
+        updateCharts("all");
+        svgMap.selectAll("path").attr("fill", "#69b3a2");
+    });
+    
+    d3.select("#reset-button").style("display", "block");
 
     const containerMap = d3.select("#map-container")
     const widthMap = 800;
@@ -183,17 +189,25 @@ Promise.all([
                 .style("top", `${event.pageY - 5}px`);
             })
             .on("mouseout", function (event, d) {
-                d3.select(this).attr("fill", "#69b3a2"); 
+                if (!d3.select(this).classed("selected")) {
+                    d3.select(this).attr("fill", "#69b3a2");
+                }
                 tooltip.transition().style("opacity", 0);
             })
             .on("click", function (event, d){
-                d3.select(this).attr("fill", "darkgreen");
+                svgMap.selectAll("path")
+                    .classed("selected", false)
+                    .attr("fill", "#69b3a2");
+
+                d3.select(this)
+                    .classed("selected", true)
+                    .attr("fill", "darkgreen");
+
                 const filteredRegion = d.properties.nm_meso;
-                console.log(filteredRegion);
                 updateCharts(filteredRegion);
             });
-        });
+    });
 
-  });
+});
   
   

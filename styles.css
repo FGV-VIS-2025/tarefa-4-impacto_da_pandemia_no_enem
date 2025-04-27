@@ -261,6 +261,14 @@ html.dark-mode a {
 /*---------------------------*/
 
 
+/*-----------Reset Button-----------*/
+#control-panel {
+    text-align: center;
+    margin-top: 20px;
+}
+/*---------------------------*/
+
+
 /*----------Tooltip----------*/
 .tooltip {
     background: #f1f5f9;
