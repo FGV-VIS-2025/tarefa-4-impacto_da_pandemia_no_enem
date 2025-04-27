@@ -50,8 +50,8 @@ header {
     padding: 4rem 2rem;
 }
 
-.content {
-    max-width: 800px;
+.main-content {
+    max-width: 1000px;
     margin: 0 auto;
     padding: 2rem;
     text-align: center;
@@ -252,17 +252,12 @@ html.dark-mode a {
 #chart-container {
     display: flex;
     justify-content: center;
-    margin: 0 auto; /* Centraliza se o container não for flex */
-    max-width: 800px;
   }
 /*---------------------------*/
   
 
 /*-----------Map-----------*/
-#map-container {
-    margin: 0 auto; 
-    /* height: auto; */
-  }
+
 /*---------------------------*/
 
 
@@ -287,3 +282,9 @@ html.dark-mode a {
   }
 /*---------------------------*/
   
+/* .project-graphic {
+	display:grid;
+	grid-template-columns : repeat(auto-fill, minmax(15em, 1fr));
+	min-width: 15em; 
+	max-width: 1fr; 
+} */
