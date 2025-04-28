@@ -67,29 +67,39 @@ Promise.all([
         .attr("class", "tooltip");
 
     // Atualiza o gráfico com base na região selecionada
-    function updateCharts(region) {
+    function barCharts(region, column, filteredCategory) {
         // Filtra os dados conforme a região
         const filteredData2019 = (region === "all") ? data2019 : data2019.filter(d => d.MESORREGIAO === region);
         const filteredData2020 = (region === "all") ? data2020 : data2020.filter(d => d.MESORREGIAO === region);
 
-        // Recalcula as contagens e a distribuição por sexo
-        const inscricoes = [
-        { 
-            ano: "2019", 
-            total: filteredData2019.length, 
-            M: filteredData2019.filter(d => d.TP_SEXO === 'M').length,
-            F: filteredData2019.filter(d => d.TP_SEXO === 'F').length
-        },
-        { 
-            ano: "2020", 
-            total: filteredData2020.length, 
-            M: filteredData2020.filter(d => d.TP_SEXO === 'M').length,
-            F: filteredData2020.filter(d => d.TP_SEXO === 'F').length
-        }
-        ];
+        const array = [...new Set(filteredData2019.map(d => d[column]))];
 
-        // Atualiza a escala do eixo Y com base no máximo dos totais
-        y.domain([0, d3.max(inscricoes, d => d.total)]).nice();
+        // const dictColumns = {
+        //     "Raça" : "TP_COR_RACA",
+        //     "Sexo" : "TP_SEXO",
+        //     "Escola" : "TP_ESCOLA",
+        //     "Estado Civil" : "TP_ESTADO_CIVIL",
+        //     "Faixa Etária" : "TP_FAIXA_ETARIA",
+        //     "Zona" : "TP_LOCALIZACAO_ESC",
+        // };
+
+        const subscriptions = [
+                        {year: "2019", total: filteredData2019.length},
+                        {year: "2020", total: filteredData2020.length}
+                        ];
+
+        for (let index = 0; index < array.length; index++) {
+            subscriptions[0][column + String(index)] = filteredData2019.filter(d => d[column] === array[index]).length;
+            subscriptions[1][column + String(index)] = filteredData2020.filter(d => d[column] === array[index]).length;
+        }
+
+        // Se há uma categoria filtrada, remove todas as outras
+        if (filteredCategory) {
+            array.splice(0, array.length, filteredCategory);
+        }
+
+        // Atualiza a escala do eixo Y
+        y.domain([0, d3.max(subscriptions, d => d3.max(array.map(category => d[column + String(array.indexOf(category))] || 0)))]).nice();
 
         // Atualiza o eixo Y
         svg.selectAll(".y-axis").remove();
@@ -98,57 +108,50 @@ Promise.all([
             .attr("transform", `translate(${margin.left},0)`)
             .call(d3.axisLeft(y));
 
-        // Atualiza o eixo X caso necessário
+        // Atualiza o eixo X
         svg.selectAll(".x-axis").remove();
         svg.append("g")
             .attr("class", "x-axis")
             .attr("transform", `translate(0,${height - margin.bottom})`)
             .call(d3.axisBottom(x));
 
-        // Junta os dados e atualiza as barras
-        const bars = barsGroup.selectAll(".bar")
-            .data(inscricoes);
+        // Adiciona a escala secundária para os subgrupos
+        const xSubgroup = d3.scaleBand()
+            .domain(array)
+            .range([0, x.bandwidth()])
+            .padding(0.05);
 
-        // Atualiza barras já existentes
-        bars.transition().duration(500)
-            .attr("y", d => y(d.total))
-            .attr("height", d => y(0) - y(d.total));
+        // Junta os dados organizados para cada ano e categoria
+        const barGroups = barsGroup.selectAll(".chart-container")
+            .data(subscriptions)
+            .join("g")
+            .attr("class", "chart-container")
+            .attr("transform", d => `translate(${x(d.year)}, 0)`);
 
-        // Insere novas barras
-        bars.enter().append("rect")
-            .attr("class", "bar")
-            .attr("x", d => x(d.ano))
-            .attr("width", x.bandwidth())
-            .attr("y", y(0))
-            .attr("height", 0)
-            .attr("fill", "#69b3a2")
-            .on("mouseover", (event, d) => {
-                tooltip.transition().duration(200).style("opacity", 1);
-                tooltip.html(
-                `<strong>${d.ano}</strong><br/>` +
-                `Total: ${d.total}<br/>` +
-                `Masculino: ${d.M}<br/>` +
-                `Feminino: ${d.F}`
-                )
-                .style("left", `${event.pageX + 10}px`)
-                .style("top", `${event.pageY - 28}px`);
-            })
-            .on("mouseout", () => {
-                tooltip.transition().duration(300).style("opacity", 0);
-            })
-            .transition().duration(500)
-            .attr("y", d => y(d.total))
-            .attr("height", d => y(0) - y(d.total));
-
+        // Adiciona barras dentro dos grupos
+        barGroups.selectAll("rect")
+            .data(d => array.map(category => ({
+                key: category,
+                value: d[column + String(array.indexOf(category))] || 0
+            })))
+            .join("rect")
+            .attr("x", d => xSubgroup(d.key))
+            .attr("y", d => y(d.value))
+            .attr("width", xSubgroup.bandwidth())
+            .attr("height", d => y(0) - y(d.value))
+            .attr("fill", (d, i) => d3.schemeCategory10[i % 10])
+            .on("click", function (event, d){
+                barCharts(region, column, array);
+            });
         // Remove barras excedentes, se existirem
-        bars.exit().remove();
+        barGroups.exit().remove();
     }
 
-    updateCharts("all");
+    barCharts("all", "TP_COR_RACA");
 
     // Configuração do botão "Reset Filter" – este botão é livre e posicionado conforme o CSS
     d3.select("#reset-button").on("click", () => {
-        updateCharts("all");
+        barCharts("all", "TP_COR_RACA");
         svgMap.selectAll("path").classed("selected", false).attr("fill", "#69b3a2");
     });
     
@@ -204,7 +207,7 @@ Promise.all([
                     .attr("fill", "darkgreen");
 
                 const filteredRegion = d.properties.nm_meso;
-                updateCharts(filteredRegion);
+                barCharts(filteredRegion, "TP_COR_RACA");
             });
     });
 
