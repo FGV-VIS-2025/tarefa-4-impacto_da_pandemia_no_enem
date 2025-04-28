@@ -144,15 +144,125 @@ Promise.all([
         bars.exit().remove();
     }
 
+    function updateHeatMap(region) {
+        const filteredData2019 = (region === "all") ? data2019 : data2019.filter(d => d.MESORREGIAO === region);
+
+        let selected1 = document.getElementById("variable1").value;
+        let selected2 = document.getElementById("variable2").value;
+
+        const marginHeatmap = { top: 20, right: 30, bottom: 40, left: 50 };
+        const heatmapContainer = d3.select("#heatmap-container");
+        // const fullWidth = heatmapContainer.node().getBoundingClientRect().width;
+        // const fullHeight = heatmapContainer.node().getBoundingClientRect().height;
+
+        const fullWidth = 800;
+        const fullHeight = 400;
+
+        const width = fullWidth - marginHeatmap.left - marginHeatmap.right;
+        const height = fullHeight - marginHeatmap.top - marginHeatmap.bottom;
+
+
+        const counts = {};
+        filteredData2019.forEach(d => {
+            const variable1 = d[selected1];
+            const variable2 = d[selected2];
+            const key = `${variable1}-${variable2}`
+            counts[key] = (counts[key] || 0) + 1;
+        });
+        
+        const cats1 = [...new Set(filteredData2019.map(d => d[selected1]))];
+        const cats2 = [...new Set(filteredData2019.map(d => d[selected2]))];
+
+        const fullGrid = [];
+        cats1.forEach(v1 => {
+            cats2.forEach(v2 => {
+                const key = `${v1}-${v2}`;
+                fullGrid.push({
+                    v1,
+                    v2,
+                    value: counts[key] || 0
+                });
+            });
+        });
+
+        const x = d3.scaleBand()
+            .domain(cats1)
+            .range([0, width])
+            .padding(0.05);
+
+        const y = d3.scaleBand()
+            .domain(cats2)
+            .range([height, 0])
+            .padding(0.05);
+
+        const color = d3.scaleSequential()
+            .interpolator(d3.interpolateInferno)
+            .domain([0, d3.max(Object.values(counts))]);
+
+        const svgHeatmap = d3.select("#heatmap")
+            .attr("width", fullWidth)
+            .attr("height", fullHeight);
+
+        svgHeatmap.selectAll("*").remove();
+        // Atualiza o eixo Y
+        const g = svgHeatmap.append("g")
+            .attr("transform", `translate(${marginHeatmap.left},${marginHeatmap.top})`);
+
+        g.selectAll("rect")
+            .data(fullGrid, d => d.v1 + "-" + d.v2)
+            .enter()
+            .append("rect")
+                .attr("x", d => x(d.v1))
+                .attr("y", d => y(d.v2))
+                .attr("width", x.bandwidth() - 1)
+                .attr("height", y.bandwidth() - 1)
+                .attr("fill", d => color(d.value));
+        
+        const xAxis = d3.axisBottom(x);
+        const yAxis = d3.axisLeft(y);
+
+        g.append("g")
+            .attr("class", "x-axis")
+            .attr("transform", `translate(0,${height})`)
+            .call(xAxis);
+
+        g.append("g")
+            .attr("class", "y-axis")
+            .call(yAxis);
+                
+        g.append("text")
+            .attr("class","axis-label")
+            .attr("x", width / 2)
+            .attr("y", height + margin.bottom - 10)
+            .attr("text-anchor", "middle")
+            .text(selected1);
+
+        g.append("text")
+            .attr("class","axis-label")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -height / 2)
+            .attr("y", -margin.left + 20)
+            .attr("text-anchor", "middle")
+            .text(selected2);
+
+    }
+
+    let currentRegion = "all";
+
     updateCharts("all");
+    updateHeatMap("all");
 
     // Configuração do botão "Reset Filter" – este botão é livre e posicionado conforme o CSS
     d3.select("#reset-button").on("click", () => {
         updateCharts("all");
+        updateHeatMap("all");
         svgMap.selectAll("path").classed("selected", false).attr("fill", "#69b3a2");
     });
     
     d3.select("#reset-button").style("display", "block");
+
+    d3.select("#variable1").on("change", () => updateHeatMap(currentRegion));
+    d3.select("#variable2").on("change", () => updateHeatMap(currentRegion));
 
     const containerMap = d3.select("#map-container")
     const widthMap = 800;
@@ -205,6 +315,7 @@ Promise.all([
 
                 const filteredRegion = d.properties.nm_meso;
                 updateCharts(filteredRegion);
+                updateHeatMap(filteredRegion)
             });
     });
 
