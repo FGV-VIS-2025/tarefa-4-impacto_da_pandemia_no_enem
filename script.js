@@ -144,6 +144,55 @@ Promise.all([
         bars.exit().remove();
     }
 
+    function updateColorbar(colorscale) {
+        const container = d3.select("#colorbar");
+        container.selectAll("*").remove();
+
+        const margin = {left: 30, right: 30, top: 10, bottom: 20};  
+        const width = 400
+        const height = 20;
+
+        const svg = container.append("svg")
+            .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+            .attr("preserveAspectRatio", "xMidYMid meet")
+
+            const defs = svg.append("defs")
+            const grads = defs.append("linearGradient")
+                .attr("id", "legend-gradient")
+                .attr("x1", "0%").attr("y1", "0%")
+                .attr("x2", "100%").attr("y2", "0%");
+
+        const n = 10;
+        const [minVal, maxVal] = colorscale.domain();
+        const stops = d3.range(n).map(i => minVal + (maxVal - minVal) * i / (n - 1));
+
+        grads.selectAll("stop")
+            .data(stops)
+            .enter()
+            .append("stop")
+                .attr("offset", (d, i) => `${100*i/(n-1)}%`)
+                .attr("stop-color", d => colorscale(d));
+
+        svg.append("rect")
+            .attr("x", margin.left)
+            .attr("y", margin.top)
+            .attr("width", width)
+            .attr("height", height)
+            .style("fill", "url(#legend-gradient)");
+
+        const legendScale = d3.scaleLinear()
+            .domain(colorscale.domain())
+            .range([0, width]);
+
+        const axis = d3.axisBottom(legendScale)
+            .ticks(5)
+            .tickFormat(d3.format("~s"));
+
+        svg.append("g")
+            .attr("transform", `translate(${margin.left},${height + margin.top})`)
+            .call(axis);
+    }
+
     function updateHeatMap(region, year) {
         // Filtra os dados conforme a região
         let filteredDataYear;
@@ -207,7 +256,7 @@ Promise.all([
             .padding(0.05);
 
         const color = d3.scaleSequential()
-            .interpolator(d3.interpolateInferno)
+            .interpolator(d3.interpolateBlues)
             .domain([0, d3.max(Object.values(counts))]);
 
         let svgHeatmap;
@@ -241,6 +290,9 @@ Promise.all([
         const xAxis = d3.axisBottom(x);
         const yAxis = d3.axisLeft(y);
 
+        const selectedText1 = document.getElementById("variable1").options[document.getElementById("variable1").selectedIndex].text;
+        const selectedText2 = document.getElementById("variable2").options[document.getElementById("variable2").selectedIndex].text;
+ 
         g.append("g")
             .attr("class", "x-axis")
             .attr("transform", `translate(0,${height})`)
@@ -255,7 +307,7 @@ Promise.all([
             .attr("x", width / 2)
             .attr("y", height + margin.bottom - 10)
             .attr("text-anchor", "middle")
-            .text(selected1);
+            .text(selectedText1);
 
         g.append("text")
             .attr("class","axis-label")
@@ -263,7 +315,9 @@ Promise.all([
             .attr("x", -height / 2)
             .attr("y", -margin.left + 20)
             .attr("text-anchor", "middle")
-            .text(selected2);
+            .text(selectedText2);
+        
+        updateColorbar(color);
 
     }
 

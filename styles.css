@@ -310,6 +310,20 @@ html.dark-mode a {
     display: block;
  }
 
+ #colorbar {
+    width: 60%;
+    margin: 1rem auto;
+    text-align: center;
+ }
+ #colorbar svg {
+    width: 100%;
+    height: auto;
+ }
+
+.axis-label {
+    fill: currentColor
+}
+
 /*---------------------------*/
   
 /*.project-graphic {
