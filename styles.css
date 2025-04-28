@@ -252,12 +252,22 @@ html.dark-mode a {
 #chart-container {
     display: flex;
     justify-content: center;
-  }
+}
+
+#chart-container {
+    cursor: pointer;
+}
 /*---------------------------*/
   
 
 /*-----------Map-----------*/
+#map-container {
+    cursor: pointer;
+}
 
+#map-container:hover {
+    transform: scale(1.05);
+}
 /*---------------------------*/
 
 
@@ -265,6 +275,22 @@ html.dark-mode a {
 #control-panel {
     text-align: center;
     margin-top: 20px;
+}
+
+#reset-button {
+    padding: 6px 12px;
+    background-color: #224fa386; 
+    color: #fff;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#reset-button:hover {
+    /* background-color: #e65c00; */
+    transform: scale(1.05);
 }
 /*---------------------------*/
 
@@ -289,10 +315,3 @@ html.dark-mode a {
     border: 1px solid #475569;
   }
 /*---------------------------*/
-  
-/* .project-graphic {
-	display:grid;
-	grid-template-columns : repeat(auto-fill, minmax(15em, 1fr));
-	min-width: 15em; 
-	max-width: 1fr; 
-} */
