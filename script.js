@@ -144,34 +144,44 @@ Promise.all([
         bars.exit().remove();
     }
 
-    function updateHeatMap(region) {
-        const filteredData2019 = (region === "all") ? data2019 : data2019.filter(d => d.MESORREGIAO === region);
+    function updateHeatMap(region, year) {
+        // Filtra os dados conforme a região
+        let filteredDataYear;
+        if (year === 2019) {
+            filteredDataYear = data2019;
+        } else if (year === 2020) {
+            filteredDataYear = data2020;
+        } else {
+            console.error("Ano inválido. Use 2019 ou 2020.");
+        }
 
+        const filteredData = (region === "all") ? filteredDataYear : filteredDataYear.filter(d => d.MESORREGIAO === region);
+
+        // Obtém por meio do select do HTML as variáveis dos eixos
         let selected1 = document.getElementById("variable1").value;
         let selected2 = document.getElementById("variable2").value;
 
+        // Definição de proporções
         const marginHeatmap = { top: 20, right: 30, bottom: 40, left: 50 };
         const heatmapContainer = d3.select("#heatmap-container");
-        // const fullWidth = heatmapContainer.node().getBoundingClientRect().width;
-        // const fullHeight = heatmapContainer.node().getBoundingClientRect().height;
 
-        const fullWidth = 800;
+        const fullWidth = 400;
         const fullHeight = 400;
 
         const width = fullWidth - marginHeatmap.left - marginHeatmap.right;
         const height = fullHeight - marginHeatmap.top - marginHeatmap.bottom;
 
-
+        // Contagem das combinações de variáveis
         const counts = {};
-        filteredData2019.forEach(d => {
+        filteredData.forEach(d => {
             const variable1 = d[selected1];
             const variable2 = d[selected2];
             const key = `${variable1}-${variable2}`
             counts[key] = (counts[key] || 0) + 1;
         });
         
-        const cats1 = [...new Set(filteredData2019.map(d => d[selected1]))];
-        const cats2 = [...new Set(filteredData2019.map(d => d[selected2]))];
+        const cats1 = [...new Set(filteredData.map(d => d[selected1]))];
+        const cats2 = [...new Set(filteredData.map(d => d[selected2]))];
 
         const fullGrid = [];
         cats1.forEach(v1 => {
@@ -185,6 +195,7 @@ Promise.all([
             });
         });
 
+        //  Desenvolvimento do gráfico
         const x = d3.scaleBand()
             .domain(cats1)
             .range([0, width])
@@ -199,9 +210,17 @@ Promise.all([
             .interpolator(d3.interpolateInferno)
             .domain([0, d3.max(Object.values(counts))]);
 
-        const svgHeatmap = d3.select("#heatmap")
-            .attr("width", fullWidth)
-            .attr("height", fullHeight);
+        let svgHeatmap;
+        if (year === 2019) {    
+            svgHeatmap = d3.select("#heatmap2019")
+                .attr("width", fullWidth)
+                .attr("height", fullHeight);
+        }
+        else if (year === 2020) {
+            svgHeatmap = d3.select("#heatmap2020")
+                .attr("width", fullWidth)
+                .attr("height", fullHeight);
+        }
 
         svgHeatmap.selectAll("*").remove();
         // Atualiza o eixo Y
@@ -218,6 +237,7 @@ Promise.all([
                 .attr("height", y.bandwidth() - 1)
                 .attr("fill", d => color(d.value));
         
+        // Adiciona os rótulos de texto
         const xAxis = d3.axisBottom(x);
         const yAxis = d3.axisLeft(y);
 
@@ -250,19 +270,27 @@ Promise.all([
     let currentRegion = "all";
 
     updateCharts("all");
-    updateHeatMap("all");
+    updateHeatMap("all", 2019);
+    updateHeatMap("all", 2020);
 
     // Configuração do botão "Reset Filter" – este botão é livre e posicionado conforme o CSS
     d3.select("#reset-button").on("click", () => {
         updateCharts("all");
-        updateHeatMap("all");
+        updateHeatMap("all", 2019);
+        updateHeatMap("all", 2020);
         svgMap.selectAll("path").classed("selected", false).attr("fill", "#69b3a2");
     });
     
     d3.select("#reset-button").style("display", "block");
 
-    d3.select("#variable1").on("change", () => updateHeatMap(currentRegion));
-    d3.select("#variable2").on("change", () => updateHeatMap(currentRegion));
+    d3.select("#variable1").on("change", () => {
+        updateHeatMap(currentRegion, 2019); 
+        updateHeatMap(currentRegion, 2020);
+    });
+    d3.select("#variable2").on("change", () => {
+        updateHeatMap(currentRegion, 2019); 
+        updateHeatMap(currentRegion, 2020);
+    });
 
     const containerMap = d3.select("#map-container")
     const widthMap = 800;
