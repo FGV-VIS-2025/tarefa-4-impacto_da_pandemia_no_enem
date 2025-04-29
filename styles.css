@@ -293,6 +293,22 @@ html.dark-mode a {
     transform: scale(1.05);
 }
 
+#select-button {
+    padding: 6px 12px;
+    background-color: #224fa386; 
+    color: #fff;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#select-button option {
+    background-color: #1b3f6c; /* Cor mais escura */
+    color: #fff;
+}
+
 .legend {
     font-family: Arial, sans-serif;
 }

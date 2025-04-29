@@ -195,11 +195,17 @@ Promise.all([
             });
     }
 
-    barCharts("all", "TP_SEXO");
+    barCharts("all"); 
+
+    d3.select("#select-button").on("change", () => {
+        const category = document.getElementById("select-button").value;
+        barCharts("all", category); 
+    });
 
     // Configuração do botão "Remover Filtros"
     d3.select("#reset-button").on("click", () => {
-        barCharts("all", "TP_SEXO");
+        const category = document.getElementById("select-button").selectedIndex = 0;
+        barCharts("all", category);
         svgMap.selectAll("path").classed("selected", false).attr("fill", "#69b3a2");
     });
     
@@ -256,7 +262,8 @@ Promise.all([
                     .attr("fill", "darkgreen");
 
                 const filteredRegion = d.properties.nm_meso;
-                barCharts(filteredRegion, "TP_COR_RACA");
+                const category = document.getElementById("select-button").value;
+                barCharts(filteredRegion, category);
             });
     });
 
