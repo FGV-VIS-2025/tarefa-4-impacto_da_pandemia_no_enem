@@ -161,7 +161,6 @@ Promise.all([
     }
 
     function boxPlot(region) {
-        
         // Primeiro limpa o SVG para redesenhar
         svgBox.selectAll("*").remove();
 
@@ -333,6 +332,15 @@ Promise.all([
             .attr("x", widthBox / 2)
             .attr("y", heightBox - 6)
             .text("Ano");
+
+        // Para alterar o título
+        const title = d3.select("#boxplot-title");
+        if (region === "all") {
+            title.text("Distribuição da Média de Presença por Cidade em Minas Gerais")
+        }
+        else {
+            title.text("Distribuição da Média de Presença por Cidade para " + region + " em Minas Gerais")
+        }    
     }
     
 
