@@ -292,6 +292,33 @@ html.dark-mode a {
     /* background-color: #e65c00; */
     transform: scale(1.05);
 }
+
+.legend {
+    font-family: Arial, sans-serif;
+}
+
+.legend-item {
+    cursor: pointer; 
+}
+
+.legend-rect {
+    stroke: #333; 
+    stroke-width: 1;
+}
+
+.legend-text {
+    fill: #646464; /* Cor do texto */
+    font-size: 16px;
+}
+
+.legend-item:hover .legend-rect {
+    transform: scale(1.05);
+    stroke-width: 2;
+}
+
+.legend-item:hover .legend-text {
+    transform: scale(1.05);
+}
 /*---------------------------*/
 
 
