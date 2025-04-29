@@ -729,7 +729,7 @@ Promise.all([
     const path = d3.geoPath().projection(projection);
 
     // Carrega os dados GeoJSON
-    d3.json("/GeoJSON/regioes_minas.json").then(geojson => {
+    d3.json("./GeoJSON/regioes_minas.JSON").then(geojson => {
         svgMap.selectAll("path")
             .data(geojson.features)
             .enter()
