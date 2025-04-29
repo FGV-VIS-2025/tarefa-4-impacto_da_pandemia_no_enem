@@ -189,6 +189,14 @@ Promise.all([
             .attr("class", "x-axis")
             .attr("transform", `translate(0,${height - margin.bottom})`)
             .call(d3.axisBottom(x));
+
+        svg.append("text")
+            .attr("class", "x-label")
+            .attr("text-anchor", "middle")
+            .attr("x", widthBox / 2)
+            .attr("y", heightBox - 6)
+            .text("Ano");
+    
     
         // Escala para subgrupos - usa displayCategories
         const xSubgroup = d3.scaleBand()
@@ -649,7 +657,7 @@ Promise.all([
         g.append("text")
             .attr("class","axis-label")
             .attr("x", width / 2)
-            .attr("y", height + margin.bottom - 10)
+            .attr("y", height + margin.bottom + 45)
             .attr("text-anchor", "middle")
             .text(selectedText1);
 
@@ -657,7 +665,7 @@ Promise.all([
             .attr("class","axis-label")
             .attr("transform", "rotate(-90)")
             .attr("x", -height / 2)
-            .attr("y", -margin.left + 20)
+            .attr("y", -margin.left - 40)
             .attr("text-anchor", "middle")
             .text(selectedText2);
 
