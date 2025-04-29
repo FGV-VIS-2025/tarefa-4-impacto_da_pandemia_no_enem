@@ -71,128 +71,124 @@ Promise.all([
     function barCharts(region, column, filteredCategory) {
         let colorScale = d3.schemeCategory10;
         svg.selectAll(".legend").remove();
+        
         // Filtra os dados conforme a região
         const filteredData2019 = (region === "all") ? data2019 : data2019.filter(d => d.MESORREGIAO === region);
         const filteredData2020 = (region === "all") ? data2020 : data2020.filter(d => d.MESORREGIAO === region);
-
-        array = [...new Set(filteredData2019.map(d => d[column]))];
-
+    
+        // Obtém TODAS as categorias possíveis (não apenas as filtradas)
+        const allCategories = [...new Set(data2019.map(d => d[column]))];
+        
+        // Define as categorias que serão exibidas
+        const displayCategories = filteredCategory ? [filteredCategory] : allCategories;
+    
         const subscriptions = [
-                        {year: "2019", total: filteredData2019.length},
-                        {year: "2020", total: filteredData2020.length}
-                        ];
-
-        for (let index = 0; index < array.length; index++) {
-            subscriptions[0][column + String(index)] = filteredData2019.filter(d => d[column] === array[index]).length;
-            subscriptions[1][column + String(index)] = filteredData2020.filter(d => d[column] === array[index]).length;
-        }
-
-        // Se há uma categoria filtrada, remove todas as outras
-        if (filteredCategory) {
-            array.splice(0, array.length, filteredCategory);
-        }
-
-        // Atualiza a escala do eixo Y
-        y.domain([0, d3.max(subscriptions, d => d3.max(array.map(category => d[column + String(array.indexOf(category))] || 0)))]).nice();
-
-        // Atualiza o eixo Y
+            {year: "2019", total: filteredData2019.length},
+            {year: "2020", total: filteredData2020.length}
+        ];
+    
+        // Mapeia todas as categorias possíveis
+        allCategories.forEach((category, index) => {
+            subscriptions[0][column + index] = filteredData2019.filter(d => d[column] === category).length;
+            subscriptions[1][column + index] = filteredData2020.filter(d => d[column] === category).length;
+        });
+    
+        // Atualiza a escala do eixo Y com base nas categorias exibidas
+        const maxValue = d3.max(subscriptions, d => 
+            d3.max(displayCategories.map(category => {
+                const index = allCategories.indexOf(category);
+                return d[column + index] || 0;
+            }))
+        );
+        y.domain([0, maxValue]).nice();
+    
+        // Atualiza os eixos
         svg.selectAll(".y-axis").remove();
         svg.append("g")
             .attr("class", "y-axis")
             .attr("transform", `translate(${margin.left},0)`)
             .call(d3.axisLeft(y));
-
-        // Atualiza o eixo X
+    
         svg.selectAll(".x-axis").remove();
         svg.append("g")
             .attr("class", "x-axis")
             .attr("transform", `translate(0,${height - margin.bottom})`)
             .call(d3.axisBottom(x));
-
-        // Adiciona a escala secundária para os subgrupos
+    
+        // Escala para subgrupos - usa displayCategories
         const xSubgroup = d3.scaleBand()
-            .domain(array)
+            .domain(displayCategories)
             .range([0, x.bandwidth()])
             .padding(0.05);
-
-        // Junta os dados organizados para cada ano e categoria
+    
+        // Atualiza as barras
         const barGroups = barsGroup.selectAll(".chart-container")
             .data(subscriptions)
             .join("g")
             .attr("class", "chart-container")
             .attr("transform", d => `translate(${x(d.year)}, 0)`);
-
-        // Adiciona barras dentro dos grupos
+    
         barGroups.selectAll("rect")
-            .data(d => array.map(category => ({
-                key: category,
-                value: d[column + String(array.indexOf(category))] || 0
-            })))
+            .data(d => displayCategories.map(category => {
+                const index = allCategories.indexOf(category);
+                return {
+                    key: category,
+                    value: d[column + index] || 0,
+                    year: d.year
+                };
+            }))
             .join("rect")
             .attr("x", d => xSubgroup(d.key))
             .attr("y", d => y(d.value))
             .attr("width", xSubgroup.bandwidth())
             .attr("height", d => y(0) - y(d.value))
-            .attr("fill", (d, i) => colorScale[i % 10])
-            .on("mouseover", function (event, d) {
-                d3.select(this) 
-                .transition()
-                .duration(200)
-                .attr("stroke", "black")
+            .attr("fill", (d, i) => colorScale[allCategories.indexOf(d.key) % 10])
+            .on("mouseover", function(event, d) {
+                d3.select(this).transition().duration(200).attr("stroke", "black");
             })
-            .on("mouseout", function (event, d) {
-                d3.select(this) 
-                    .transition()
-                    .duration(200)
-                    .attr("stroke", "none")
+            .on("mouseout", function(event, d) {
+                d3.select(this).transition().duration(200).attr("stroke", "none");
             })
-            .on("click", function (event, d){
-                barCharts(region, column, array);
+            .on("click", function(event, d) {
+                // Alterna o filtro: se já está filtrado, mostra tudo; senão, filtra
+                barCharts(region, column, filteredCategory === d.key ? null : d.key);
             });
-
-        // Remove barras excedentes, se existirem
-        barGroups.exit().remove();
-
-        createLegend(colorScale);
+    
+        createLegend(colorScale, column, region, allCategories, filteredCategory);
     }
-
-    function createLegend(colorScale) {
-        // Adiciona a legenda ao gráfico
+    
+    function createLegend(colorScale, column, region, allCategories, currentFilter) {
+        svg.selectAll(".legend").remove();
+        
+        // Se está filtrado, não mostra legenda (ou mostra apenas o item filtrado)
+        if (currentFilter) return;
+        
         const legend = svg.append("g")
             .attr("class", "legend")
             .attr("transform", `translate(${width - margin.right - 100},${margin.top})`);
-        
-        if (array.length === 1) {
-            svg.selectAll(".legend").remove();
-        }
-        else {
-            array.forEach((category, i) => {
-                const legendGroup = legend.append("g")
-                    .attr("class", "legend-item") // Classe para cada item da legenda
-                    .attr("transform", `translate(0, ${i * 20})`);
-
-                legendGroup.append("rect")
-                    .attr("class", "legend-rect") // Classe para os retângulos
-                    .attr("width", 15)
-                    .attr("height", 15)
-                    .attr("fill", colorScale[i % 10]);
-                
-                    legendGroup.append("text")
-                        .attr("class", "legend-text") // Classe para os textos
-                        .attr("x", 20)
-                        .attr("y", 12)
-                        .text(category)
-                        .style("font-size", "12px")
-                        .attr("fill", "black");
-                // Vincula os dados às legendas
-                legendGroup.datum(category);
+    
+        allCategories.forEach((category, i) => {
+            const legendGroup = legend.append("g")
+                .attr("class", "legend-item")
+                .attr("transform", `translate(0, ${i * 20})`)
+                .style("cursor", "pointer");
+    
+            legendGroup.append("rect")
+                .attr("width", 15)
+                .attr("height", 15)
+                .attr("fill", colorScale[i % 10]);
+    
+            legendGroup.append("text")
+                .attr("x", 20)
+                .attr("y", 12)
+                .text(category)
+                .style("font-size", "12px")
+                .attr("fill", "black");
+    
+            legendGroup.on("click", function() {
+                barCharts(region, column, category);
             });
-        }
-        legend.selectAll(".legend-item")
-            .on("click", function(event, d) {
-                console.log(`Categoria clicada: ${d}`);
-                barCharts("all", "TP_COR_RACA", d);
-            });
+        });
     }
 
     barCharts("all"); 
