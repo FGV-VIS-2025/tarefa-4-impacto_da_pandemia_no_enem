@@ -154,7 +154,9 @@ Promise.all([
                 barCharts(region, column, filteredCategory === d.key ? null : d.key);
             });
     
-        createLegend(colorScale, column, region, allCategories, filteredCategory);
+        if (column && column !== "all"){
+            createLegend(colorScale, column, region, allCategories, filteredCategory);
+        }
     }
     
     function createLegend(colorScale, column, region, allCategories, currentFilter) {
