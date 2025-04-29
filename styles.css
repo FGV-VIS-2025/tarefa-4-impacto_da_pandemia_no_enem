@@ -357,8 +357,43 @@ html.dark-mode a {
     color: #f1f5f9;
     border: 1px solid #475569;
   }
-/*---------------------------*/
 
+ #heatmaps {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2rem;
+    margin: 2rem auto;
+    max-width: 1000px;
+ }
+ 
+ .heatmap-wrapper {
+    flex: 1 1 45%;
+    max-width: 480px;
+    text-align: center;
+ }
+
+ .heatmap-wrapper svg {
+    width: 100%;
+    height: auto;
+    display: block;
+ }
+
+ #colorbar {
+    width: 60%;
+    margin: 1rem auto;
+    text-align: center;
+ }
+ #colorbar svg {
+    width: 100%;
+    height: auto;
+ }
+
+.axis-label {
+    fill: currentColor
+}
+
+/*---------------------------*/
 
 /*-----------Outliers-------------*/
 /* Estilo padrão (modo claro) */

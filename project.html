@@ -65,17 +65,54 @@
         <div id="chart-container" style="margin: 0 auto; width: 100%; max-width: 800px; height: auto;"></div>
         <h2 id="boxplot-title"></h2>
         <div id="boxplot-container" style="margin: 0 auto; width: 100%; max-width: 800px; height: auto;"></div>
-        <p>Durante a pandemia, observamos uma redução significativa no número de participantes do ENEM...</p>
       </article>
+      
+      </section>
+      <h2 id="heatmap-title">Quantidade de inscrições no ENEM por variáveis e regiões selecionadas</h2>
+      <text>Eixo X: </text>
+      <select id="variable1">
+        <option value="" disabled selected>- Selecione uma variável -</option>
+        <option value="TP_COR_RACA">Cor ou Raça</option>
+        <option value="TP_SEXO">Sexo</option>
+        <option value="TP_ESCOLA">Tipo de escola</option>
+        <option value="TP_ESTADO_CIVIL">Estado Civíl</option>"
+        <option value="TP_FAIXA_ETARIA">Faixa Etária</option>
+        <option value="TP_LOCALIZACAO_ESC">Localização da Escola</option>"
+      </select>
+
+      <text>Eixo Y: </text>
+      <select id="variable2">
+        <option value="" disabled selected>- Selecione uma variável -</option>
+        <option value="TP_COR_RACA">Cor ou Raça</option>
+        <option value="TP_SEXO">Sexo</option>
+        <option value="TP_ESCOLA">Tipo de escola</option>
+        <option value="TP_ESTADO_CIVIL">Estado Civíl</option>"
+        <option value="TP_FAIXA_ETARIA">Faixa Etária</option>
+        <option value="TP_LOCALIZACAO_ESC">Localização da Escola</option>"
+      </select>
+
+    <section class="heatmap-container">
+      <div id="heatmaps", style="margin: 0 auto; width: 100%; max-width: 800px; height: auto; display:flex; gap: 20px;">
+        <div class="heatmap-wraper">
+          <h3>2019</h3>
+          <svg id="heatmap2019"></svg>
+        </div>
+        <div>
+          <h3>2020</h3>
+          <svg id="heatmap2020"></svg>
+        </div>
+      </div>
+      <div id="colorbar">
+        <svg id="colorbar"></svg>
+      </div>
+      <text>Quantidade de Inscrições</text>
+    </section>
     </section>  
 
     <section class="project-description">
-      <p>
-        Durante a pandemia, observamos uma redução significativa no número de participantes do ENEM...
-      </p>
-    </section>
   </main>
 
   <script src="script.js"></script>
+
 </body>
 </html>
