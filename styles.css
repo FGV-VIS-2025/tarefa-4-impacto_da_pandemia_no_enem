@@ -289,7 +289,99 @@ html.dark-mode a {
     border: 1px solid #475569;
   }
 /*---------------------------*/
-  
+
+
+/*-----------Outliers-------------*/
+/* Estilo padrão (modo claro) */
+.outlier-point {
+    fill: #475569;
+    stroke: black;
+}
+
+/* Estilo no modo escuro */
+html.dark-mode .outlier-point {
+    fill: #475569; 
+    stroke: #f1f5f9;
+}
+/*---------------------------*/
+
+
+/*-----------Rótulos------------*/
+.y-label {
+    fill: black;
+}
+
+html.dark-mode .y-label {
+    fill: #f1f5f9;
+}
+
+.x-label{
+    fill: black;
+}
+
+html.dark-mode .x-label {
+    fill: #f1f5f9;
+}
+/*---------------------------*/
+
+
+/*-----------Median--------------*/
+.median {
+    stroke: black;
+}
+
+html.dark-mode .median {
+    stroke: #f1f5f9;
+}
+/*---------------------------*/
+
+
+.q0-q1 {
+    stroke: black;
+    stroke-width: 2;
+}
+
+html.dark-mode .q0-q1 {
+    stroke: #f1f5f9;
+}
+
+.q3-q4 {
+    stroke: black;
+    stroke-width: 2;
+}
+
+html.dark-mode .q3-q4 {
+    stroke: #f1f5f9;
+}
+
+.q0-q0 {
+    stroke: black;
+    stroke-width: 2;
+}
+
+html.dark-mode .q0-q0 {
+    stroke: #f1f5f9;
+}
+
+.q4-q4 {
+    stroke: black;
+    stroke-width: 2;
+}
+
+html.dark-mode .q4-q4 {
+    stroke: #f1f5f9;
+}
+
+.box {
+    stroke: black;
+    stroke-width: 2;
+}
+
+html.dark-mode .box {
+    stroke: #f1f5f9;
+}
+
+
 /* .project-graphic {
 	display:grid;
 	grid-template-columns : repeat(auto-fill, minmax(15em, 1fr));

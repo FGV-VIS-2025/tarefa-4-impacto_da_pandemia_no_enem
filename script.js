@@ -216,93 +216,123 @@ Promise.all([
         // Configurações visuais
         const boxWidth = xBox.bandwidth() * 0.6;
         const boxplotGroup = svgBox.append("g");
-    
+
+        // Tooltip (criado uma vez fora do loop)
+        const tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0)
+            .style("position", "absolute");
+        
         // Desenha os boxplots para cada ano
         ["2019", "2020"].forEach((year, i) => {
             const stats = i === 0 ? stats2019 : stats2020;
             const xPos = xBox(year) + xBox.bandwidth() / 2;
-    
+            const filteredData = i === 0 ? filteredData2019 : filteredData2020;
+
             // Caixa principal (do Q1 ao Q3)
             boxplotGroup.append("rect")
+                .attr("class", "box")
                 .attr("x", xPos - boxWidth/2)
                 .attr("y", yBox(stats.q3))
                 .attr("width", boxWidth)
                 .attr("height", yBox(stats.q1) - yBox(stats.q3))
                 .attr("stroke", "black")
                 .attr("fill", "#69b3a2");
-    
-            // Linha da mediana
+
+            // Linha da mediana COM tooltip
             boxplotGroup.append("line")
+                .attr("class", "median")
                 .attr("x1", xPos - boxWidth/2)
                 .attr("x2", xPos + boxWidth/2)
                 .attr("y1", yBox(stats.median))
                 .attr("y2", yBox(stats.median))
                 .attr("stroke", "black")
-                .attr("stroke-width", 2);
-    
-            // Bigode inferior (de q1 até q0)
+                .attr("stroke-width", 2)
+                .on("mouseover", function(event) {
+                    tooltip.transition().duration(200).style("opacity", 1);
+                    tooltip.html(`Ano: ${year}<br>Mediana: ${stats.median.toFixed(3)}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout", function() {
+                    tooltip.transition().duration(500).style("opacity", 0);
+                });
+
+            // Bigodes e linhas horizontais (mantidos iguais)
             boxplotGroup.append("line")
-            .attr("x1", xPos)
-            .attr("x2", xPos)
-            .attr("y1", yBox(stats.q0))
-            .attr("y2", yBox(stats.q1))
-            .attr("stroke", "black");
-
-            // Bigode superior (de q3 até q4)
-            boxplotGroup.append("line")
-            .attr("x1", xPos)
-            .attr("x2", xPos)
-            .attr("y1", yBox(stats.q3))
-            .attr("y2", yBox(stats.q4))
-            .attr("stroke", "black");
-
-            // Linhas horizontais nos extremos (q0 e q4)
-            boxplotGroup.append("line")
-            .attr("x1", xPos - boxWidth/3)
-            .attr("x2", xPos + boxWidth/3)
-            .attr("y1", yBox(stats.q0))
-            .attr("y2", yBox(stats.q0))
-            .attr("stroke", "black");
-
-            boxplotGroup.append("line")
-            .attr("x1", xPos - boxWidth/3)
-            .attr("x2", xPos + boxWidth/3)
-            .attr("y1", yBox(stats.q4))
-            .attr("y2", yBox(stats.q4))
-            .attr("stroke", "black");
-
-            // Desenha outliers
-            const outliers = (i === 0 ? presenca2019 : presenca2020)
-            .filter(d => d < stats.q0 || d > stats.q4);
-
-            outliers.forEach(outlier => {
-            boxplotGroup.append("circle")
-                .attr("cx", xPos)
-                .attr("cy", yBox(outlier))
-                .attr("r", 3)
-                .attr("fill", "red")
+                .attr("class", "q0-q1")
+                .attr("x1", xPos)
+                .attr("x2", xPos)
+                .attr("y1", yBox(stats.q0))
+                .attr("y2", yBox(stats.q1))
                 .attr("stroke", "black");
-            });    
+
+            boxplotGroup.append("line")
+                .attr("class", "q3-q4")
+                .attr("x1", xPos)
+                .attr("x2", xPos)
+                .attr("y1", yBox(stats.q3))
+                .attr("y2", yBox(stats.q4))
+                .attr("stroke", "black");
+
+            boxplotGroup.append("line")
+                .attr("class", "q0-q0")
+                .attr("x1", xPos - boxWidth/3)
+                .attr("x2", xPos + boxWidth/3)
+                .attr("y1", yBox(stats.q0))
+                .attr("y2", yBox(stats.q0))
+                .attr("stroke", "black");
+
+            boxplotGroup.append("line")
+                .attr("class", "q4-q4")
+                .attr("x1", xPos - boxWidth/3)
+                .attr("x2", xPos + boxWidth/3)
+                .attr("y1", yBox(stats.q4))
+                .attr("y2", yBox(stats.q4))
+                .attr("stroke", "black");
+
+            // Extrai outliers com dados completos (incluindo MESORREGIAO)
+            const outlierData = filteredData.filter(d => {
+                const value = +d.PRESENCA;
+                return value < stats.q0 || value > stats.q4;
+            });
+
+            // Desenha outliers com tooltip
+            outlierData.forEach(d => {
+                boxplotGroup.append("circle")
+                    .attr("class", "outlier-point")
+                    .attr("cx", xPos)
+                    .attr("cy", yBox(+d.PRESENCA))
+                    .attr("r", 5)
+                    .attr("fill", "black")
+                    .attr("stroke", "black")
+                    .on("mouseover", function(event) {
+                        tooltip.transition().duration(200).style("opacity", 0.9);
+                        tooltip.html(`Ano: ${year}<br>Mesorregião: ${d.MESORREGIAO}<br>Taxa: ${(+d.PRESENCA).toFixed(3)}`)
+                            .style("left", (event.pageX + 10) + "px")
+                            .style("top", (event.pageY - 28) + "px");
+                    })
+                    .on("mouseout", function() {
+                        tooltip.transition().duration(500).style("opacity", 0);
+                    });
+            });
         });
     
-        // Adiciona rótulos aos eixos
+        // Adiciona rótulos aos eixos (centralizados)
         svgBox.append("text")
-            .attr("class", "y label")
-            .attr("text-anchor", "end")
-            .attr("y", 6)
-            .attr("dy", ".75em")
+            .attr("class", "y-label")
+            .attr("text-anchor", "middle")
             .attr("transform", "rotate(-90)")
-            .attr("x", -heightBox/2)
+            .attr("x", -heightBox / 2)
+            .attr("y", margin.left / 2 - 10)
             .text("Taxa de Presença");
-    
+
         svgBox.append("text")
-            .attr("class", "x label")
-            .attr("text-anchor", "end")
-            .attr("x", widthBox - margin.right)
+            .attr("class", "x-label")
+            .attr("text-anchor", "middle")
+            .attr("x", widthBox / 2)
             .attr("y", heightBox - 6)
             .text("Ano");
-
-        console.log("teste");    
     }
     
 
@@ -312,6 +342,7 @@ Promise.all([
     // Configuração do botão "Reset Filter" – este botão é livre e posicionado conforme o CSS
     d3.select("#reset-button").on("click", () => {
         updateCharts("all");
+        boxPlot("all");
         svgMap.selectAll("path").classed("selected", false).attr("fill", "#69b3a2");
     });
     
