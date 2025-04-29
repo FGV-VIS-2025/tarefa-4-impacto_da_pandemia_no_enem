@@ -33,6 +33,11 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () 
     }
 });
 
+window.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("variable1").selectedIndex = 0;
+    document.getElementById("variable2").selectedIndex = 0;
+  });  
+
 /* GRÁFICOS INTERATIVOS */
 
 // Carreaga os arquivos CSV de 2019 e 2020
@@ -200,6 +205,7 @@ Promise.all([
             filteredDataYear = data2019;
         } else if (year === 2020) {
             filteredDataYear = data2020;
+            console.log("oi");
         } else {
             console.error("Ano inválido. Use 2019 ou 2020.");
         }
@@ -333,6 +339,8 @@ Promise.all([
         updateHeatMap("all", 2019);
         updateHeatMap("all", 2020);
         svgMap.selectAll("path").classed("selected", false).attr("fill", "#69b3a2");
+        document.getElementById("variable1").selectedIndex = 0;
+        document.getElementById("variable2").selectedIndex = 0;
     });
     
     d3.select("#reset-button").style("display", "block");
@@ -397,7 +405,8 @@ Promise.all([
 
                 const filteredRegion = d.properties.nm_meso;
                 updateCharts(filteredRegion);
-                updateHeatMap(filteredRegion)
+                updateHeatMap(filteredRegion, 2019);
+                updateHeatMap(filteredRegion, 2020);
             });
     });
 
