@@ -173,6 +173,14 @@ Promise.all([
         if (column && column !== "all"){
             createLegend(colorScale, column, region, allCategories, filteredCategory);
         }
+
+        const title = d3.select("#barchart-title");
+        if (region === "all") {
+            title.text(" Quantidade de Participantes do ENEM em Minas Gerais")
+        }
+        else {
+            title.text(" Quantidade de Participantes do ENEM na região " + region.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase()))
+        }    
     }
     
     function createLegend(colorScale, column, region, allCategories, currentFilter) {
@@ -392,7 +400,7 @@ Promise.all([
             title.text("Distribuição da Média de Presença por Cidade em Minas Gerais")
         }
         else {
-            title.text("Distribuição da Média de Presença por Cidade para " + region + " em Minas Gerais")
+            title.text("Distribuição da Média de Presença por Cidade para a região " + region.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase()))
         }    
     }
     
