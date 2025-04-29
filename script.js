@@ -2,6 +2,60 @@
 
 const themeSelect = document.getElementById('theme-select');
 
+const LOOKUP = {
+    TP_SEXO: {
+        M: "Masculino",
+        F: "Feminino"
+    },
+    TP_COR_RACA: {
+        0: "Não declarado",
+        1: "Branca",
+        2: "Preta",
+        3: "Parda",
+        4: "Amarela",
+        5: "Indígena",
+        6: "Não dispõe da informação"
+    },
+    TP_ESCOLA: {
+        1: "Não respondeu",
+        2: "Pública", 
+        3: "Privada"
+    },
+    TP_ESTADO_CIVIL: {
+        0: "Não informado", 
+        1: "Solteiro(a)",
+        2: "Casado(a)",
+        3: "Divorciado(a)",
+        4: "Viúvo(a)",
+    },
+    TP_FAIXA_ETARIA: {
+        1: "Menor de 17 anos",
+        2: "17 anos",
+        3: "18 anos",
+        4: "19 anos",
+        5: "20 anos",
+        6: "21 anos",
+        7: "22 anos",
+        8: "23 anos",
+        9: "24 anos",
+        10: "25 anos",
+        11: "Entre 26 e 30 anos",
+        12: "Entre 31 e 35 anos",
+        13: "Entre 36 e 40 anos",
+        14: "Entre 41 e 45 anos",
+        15: "Entre 46 e 50 anos",
+        16: "Entre 51 e 55 anos",
+        17: "Entre 56 e 60 anos",
+        18: "Entre 61 e 65 anos",
+        19: "Entre 66 e 70 anos",
+        20: "Maior de 70 anos"
+    },
+    TP_LOCALIZACAO_ESC: {
+        1: "Urbana",
+        2: "Rural"
+    }
+}
+
 function applyTheme(theme) {
     const root = document.documentElement;
     root.classList.remove('dark-mode');
@@ -217,11 +271,11 @@ Promise.all([
         let selected2 = document.getElementById("variable2").value;
 
         // Definição de proporções
-        const marginHeatmap = { top: 20, right: 30, bottom: 40, left: 50 };
+        const marginHeatmap = { top: 20, right: 50, bottom: 100, left: 100 };
         const heatmapContainer = d3.select("#heatmap-container");
 
-        const fullWidth = 400;
-        const fullHeight = 400;
+        const fullWidth = 500;
+        const fullHeight = 500;
 
         const width = fullWidth - marginHeatmap.left - marginHeatmap.right;
         const height = fullHeight - marginHeatmap.top - marginHeatmap.bottom;
@@ -237,6 +291,9 @@ Promise.all([
         
         const cats1 = [...new Set(filteredData.map(d => d[selected1]))];
         const cats2 = [...new Set(filteredData.map(d => d[selected2]))];
+
+        const map1 = LOOKUP[selected1] || (d=>d);
+        const map2 = LOOKUP[selected2] || (d=>d);
 
         const fullGrid = [];
         cats1.forEach(v1 => {
@@ -290,11 +347,24 @@ Promise.all([
                 .attr("y", d => y(d.v2))
                 .attr("width", x.bandwidth() - 1)
                 .attr("height", y.bandwidth() - 1)
-                .attr("fill", d => color(d.value));
+                .attr("fill", d => color(d.value))
+                .on("mouseover", (event, d) => {
+                    const label1 = map1[d.v1] ||  d.v1;
+                    const label2 = map2[d.v2] ||  d.v2;
+
+                    tooltip.style("opacity", 1).html(`<strong>${label1}</strong> × <strong>${label2 }</strong><br/><em>${d.value}</em> participante(s)`);
+                })
+                .on("mousemove", (event, d) => {
+                    tooltip.style("left", `${event.pageX + 10}px`).style("top", `${event.pageY - 25}px`);
+                })
+                .on("mouseout", () => {
+                    tooltip.style("opacity", 0);
+                })
+
         
         // Adiciona os rótulos de texto
-        const xAxis = d3.axisBottom(x);
-        const yAxis = d3.axisLeft(y);
+        const xAxis = d3.axisBottom(x).tickFormat(code => map1[code] ?? code);
+        const yAxis = d3.axisLeft(y).tickFormat(code => map2[code] ?? code);
 
         const selectedText1 = document.getElementById("variable1").options[document.getElementById("variable1").selectedIndex].text;
         const selectedText2 = document.getElementById("variable2").options[document.getElementById("variable2").selectedIndex].text;
@@ -302,11 +372,19 @@ Promise.all([
         g.append("g")
             .attr("class", "x-axis")
             .attr("transform", `translate(0,${height})`)
-            .call(xAxis);
+            .call(xAxis)
+            .selectAll("text")
+                .attr("transform", "rotate(-45)")
+                .attr("dx", "-0.6em")
+                .attr("dy", "0.25em")
+                .style("text-anchor", "end");
 
         g.append("g")
             .attr("class", "y-axis")
-            .call(yAxis);
+            .call(yAxis)
+            .selectAll("text")
+                .attr("dx", "-0.6em")
+                .style("text-anchor", "end");
                 
         g.append("text")
             .attr("class","axis-label")
@@ -322,7 +400,7 @@ Promise.all([
             .attr("y", -margin.left + 20)
             .attr("text-anchor", "middle")
             .text(selectedText2);
-        
+
         updateColorbar(color);
 
     }
