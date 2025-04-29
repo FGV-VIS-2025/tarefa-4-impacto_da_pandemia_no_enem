@@ -34,25 +34,11 @@ const LOOKUP = {
         3: "18 anos",
         4: "19 anos",
         5: "20 anos",
-        6: "21 anos",
-        7: "22 anos",
-        8: "23 anos",
-        9: "24 anos",
-        10: "25 anos",
-        11: "Entre 26 e 30 anos",
-        12: "Entre 31 e 35 anos",
-        13: "Entre 36 e 40 anos",
-        14: "Entre 41 e 45 anos",
-        15: "Entre 46 e 50 anos",
-        16: "Entre 51 e 55 anos",
-        17: "Entre 56 e 60 anos",
-        18: "Entre 61 e 65 anos",
-        19: "Entre 66 e 70 anos",
-        20: "Maior de 70 anos"
+        6: "Acima de 20 anos"
     },
     TP_LOCALIZACAO_ESC: {
-        1: "Urbana",
-        2: "Rural"
+        "1.0": "Urbana",
+        "2.0": "Rural"
     }
 }
 
@@ -152,21 +138,38 @@ Promise.all([
         const filteredData2020 = (region === "all") ? data2020 : data2020.filter(d => d.MESORREGIAO === region);
     
         // Obtém TODAS as categorias possíveis (não apenas as filtradas)
-        const allCategories = [...new Set(data2019.map(d => d[column]))];
-        
-        // Define as categorias que serão exibidas
-        const displayCategories = filteredCategory ? [filteredCategory] : allCategories;
-    
+        let allCategories = [...new Set(data2019.map(d => d[column]))].sort((a, b) => parseInt(a) - parseInt(b));
+       
         const subscriptions = [
             {year: "2019", total: filteredData2019.length},
             {year: "2020", total: filteredData2020.length}
         ];
     
-        // Mapeia todas as categorias possíveis
-        allCategories.forEach((category, index) => {
-            subscriptions[0][column + index] = filteredData2019.filter(d => d[column] === category).length;
-            subscriptions[1][column + index] = filteredData2020.filter(d => d[column] === category).length;
-        });
+        if (column === "TP_FAIXA_ETARIA") {
+            subscriptions[0][column + "6"] = 0;
+            subscriptions[1][column + "6"] = 0;
+            allCategories.forEach((category, index) => { 
+                if (index < 6) {
+                subscriptions[0][column + index] = filteredData2019.filter(d => d[column] === category).length;
+                subscriptions[1][column + index] = filteredData2020.filter(d => d[column] === category).length;   
+                }
+                else {    
+                    subscriptions[0][column + "6"] += filteredData2019.filter(d => d[column] === category).length;
+                    subscriptions[1][column + "6"] += filteredData2020.filter(d => d[column] === category).length;   
+                }  
+            });
+            allCategories = allCategories.slice(0, 6);
+        }
+        else {
+            // Mapeia todas as categorias possíveis
+            allCategories.forEach((category, index) => {
+                subscriptions[0][column + index] = filteredData2019.filter(d => d[column] === category).length;
+                subscriptions[1][column + index] = filteredData2020.filter(d => d[column] === category).length;
+            });
+        }
+     
+        // Define as categorias que serão exibidas
+        const displayCategories = filteredCategory ? [filteredCategory] : allCategories;
     
         // Atualiza a escala do eixo Y com base nas categorias exibidas
         const maxValue = d3.max(subscriptions, d => 
@@ -274,7 +277,7 @@ Promise.all([
             legendGroup.append("text")
                 .attr("x", 20)
                 .attr("y", 12)
-                .text(category)
+                .text(LOOKUP[column][category])
                 .style("font-size", "12px")
                 .attr("fill", "black");
     
@@ -527,7 +530,6 @@ Promise.all([
             filteredDataYear = data2019;
         } else if (year === 2020) {
             filteredDataYear = data2020;
-            console.log("oi");
         } else {
             console.error("Ano inválido. Use 2019 ou 2020.");
         }
@@ -556,9 +558,25 @@ Promise.all([
             const key = `${variable1}-${variable2}`
             counts[key] = (counts[key] || 0) + 1;
         });
-        
-        const cats1 = [...new Set(filteredData.map(d => d[selected1]))];
-        const cats2 = [...new Set(filteredData.map(d => d[selected2]))];
+
+        let cats1;
+        let cats2;
+        if (selected1 === "TP_FAIXA_ETARIA") {
+            cats1 = [...new Set(filteredData.map(d => d[selected1]))]
+                                                  .sort((a, b) => parseInt(a) - parseInt(b))
+                                                  .slice(0, 6);
+        }
+        else {
+            cats1 = [...new Set(filteredData.map(d => d[selected1]))].sort();
+        }
+        if (selected2 === "TP_FAIXA_ETARIA") {
+            cats2 = [...new Set(filteredData.map(d => d[selected2]))]
+                                                  .sort((a, b) => parseInt(a) - parseInt(b))
+                                                  .slice(0, 6);          
+        }
+        else {
+            cats2 = [...new Set(filteredData.map(d => d[selected2]))].sort();
+        }
 
         const map1 = LOOKUP[selected1] || (d=>d);
         const map2 = LOOKUP[selected2] || (d=>d);
@@ -657,7 +675,7 @@ Promise.all([
         g.append("text")
             .attr("class","axis-label")
             .attr("x", width / 2)
-            .attr("y", height + margin.bottom + 45)
+            .attr("y", height + margin.bottom + 30)
             .attr("text-anchor", "middle")
             .text(selectedText1);
 
@@ -665,7 +683,7 @@ Promise.all([
             .attr("class","axis-label")
             .attr("transform", "rotate(-90)")
             .attr("x", -height / 2)
-            .attr("y", -margin.left - 40)
+            .attr("y", -margin.left - 20)
             .attr("text-anchor", "middle")
             .text(selectedText2);
 
