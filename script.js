@@ -82,8 +82,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
 /* Margem padrão */
 const GLOBAL_MARGIN = { top: 30, right: 30, bottom: 50, left: 80 };
-const marginboxbar = { top: 20, right: 20, bottom: 40, left: 40 };
-const marginheatmap = { top: 20, right: 50, bottom: 100, left: 100 };
   
 
 /* Gráficos interativos */
