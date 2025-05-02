@@ -672,7 +672,14 @@ Promise.all([
                         const label1 = map1[d.v1] ||  d.v1;
                         const label2 = map2[d.v2] ||  d.v2;
 
-                        tooltip.style("opacity", 1).html(`<strong>${label1}</strong> × <strong>${label2 }</strong><br/><em>${d.value}</em> participante(s)`);
+                        if (!label1 && !label2) {
+                            tooltip.style("opacity", 1).html(`<strong>Total</strong><br/><em>${d.value}</em> participante(s)`);}
+                        else if (!label1){
+                            tooltip.style("opacity", 1).html(`<strong>Total: ${label2}</strong><br/><em>${d.value}</em> participante(s)`);}
+                        else if (!label2){
+                            tooltip.style("opacity", 1).html(`<strong>Total: ${label1}</strong><br/><em>${d.value}</em> participante(s)`);}
+                        else {
+                            tooltip.style("opacity", 1).html(`<strong>Total: ${label1} × ${label2}</strong><br/><em>${d.value}</em> participante(s)`);}
                     })
                     .on("mousemove", (event, d) => {
                         tooltip.style("left", `${event.pageX + 10}px`).style("top", `${event.pageY - 25}px`);
