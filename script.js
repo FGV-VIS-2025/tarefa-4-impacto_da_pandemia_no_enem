@@ -397,6 +397,86 @@ Promise.all([
                     tooltip.transition().duration(500).style("opacity", 0);
                 });
 
+            // Linha do Q1 COM tooltip
+            boxplotGroup.append("line")
+                .attr("class", "q1-line")
+                .attr("x1", xPos - boxWidth/2)
+                .attr("x2", xPos + boxWidth/2)
+                .attr("y1", yBox(stats.q1))
+                .attr("y2", yBox(stats.q1))
+                .attr("stroke", "black")
+                .attr("stroke-width", 2)
+                .on("mouseover", function(event) {
+                    tooltip.transition().duration(200).style("opacity", 1);
+                    tooltip.html(`Ano: ${year}
+                        <br/>Q1: ${stats.q1.toFixed(3)}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout", function() {
+                    tooltip.transition().duration(500).style("opacity", 0);
+                });   
+                
+            // Linha do Q3 COM tooltip
+            boxplotGroup.append("line")
+                .attr("class", "q3-line")
+                .attr("x1", xPos - boxWidth/2)
+                .attr("x2", xPos + boxWidth/2)
+                .attr("y1", yBox(stats.q3))
+                .attr("y2", yBox(stats.q3))
+                .attr("stroke", "black")
+                .attr("stroke-width", 2)
+                .on("mouseover", function(event) {
+                    tooltip.transition().duration(200).style("opacity", 1);
+                    tooltip.html(`Ano: ${year}
+                        <br/>Q3: ${stats.q3.toFixed(3)}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout", function() {
+                    tooltip.transition().duration(500).style("opacity", 0);
+                });
+                
+            // Linha do Q4 COM tooltip
+            boxplotGroup.append("line")
+                .attr("class", "q4-line")
+                .attr("x1", xPos - boxWidth/3)
+                .attr("x2", xPos + boxWidth/3)
+                .attr("y1", yBox(stats.q4))
+                .attr("y2", yBox(stats.q4))
+                .attr("stroke", "black")
+                .attr("stroke-width", 2)
+                .on("mouseover", function(event) {
+                    tooltip.transition().duration(200).style("opacity", 1);
+                    tooltip.html(`Ano: ${year}
+                        <br/>Q4: ${stats.q4.toFixed(3)}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout", function() {
+                    tooltip.transition().duration(500).style("opacity", 0);
+                });    
+
+            // Linha do Q0 COM tooltip
+            boxplotGroup.append("line")
+                .attr("class", "q0-line")
+                .attr("x1", xPos - boxWidth/3)
+                .attr("x2", xPos + boxWidth/3)
+                .attr("y1", yBox(stats.q0))
+                .attr("y2", yBox(stats.q0))
+                .attr("stroke", "black")
+                .attr("stroke-width", 2)
+                .on("mouseover", function(event) {
+                    tooltip.transition().duration(200).style("opacity", 1);
+                    tooltip.html(`Ano: ${year}
+                        <br/>Q0: ${stats.q0.toFixed(3)}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout", function() {
+                    tooltip.transition().duration(500).style("opacity", 0);
+                });        
+
             // Bigodes e linhas horizontais (mantidos iguais)
             boxplotGroup.append("line")
                 .attr("class", "q0-q1")
@@ -411,22 +491,6 @@ Promise.all([
                 .attr("x1", xPos)
                 .attr("x2", xPos)
                 .attr("y1", yBox(stats.q3))
-                .attr("y2", yBox(stats.q4))
-                .attr("stroke", "black");
-
-            boxplotGroup.append("line")
-                .attr("class", "q0-q0")
-                .attr("x1", xPos - boxWidth/3)
-                .attr("x2", xPos + boxWidth/3)
-                .attr("y1", yBox(stats.q0))
-                .attr("y2", yBox(stats.q0))
-                .attr("stroke", "black");
-
-            boxplotGroup.append("line")
-                .attr("class", "q4-q4")
-                .attr("x1", xPos - boxWidth/3)
-                .attr("x2", xPos + boxWidth/3)
-                .attr("y1", yBox(stats.q4))
                 .attr("y2", yBox(stats.q4))
                 .attr("stroke", "black");
 
