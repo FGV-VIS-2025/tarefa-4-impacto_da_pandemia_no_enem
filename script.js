@@ -127,7 +127,6 @@ Promise.all([
         .append("div")
         .attr("class", "tooltip");
 
-    let array;
     // Atualiza o gráfico com base na região selecionada
     function barCharts(region, column, filteredCategory) {
         let colorScale = d3.schemeCategory10;
@@ -798,26 +797,33 @@ Promise.all([
             .attr("fill", "#69b3a2")
             .attr("stroke", "#333")
             .on("mouseover", function (event, d) {
-                d3.select(this).attr("fill", "green");
-                tooltip.transition().style("opacity", 1);
+                d3.select(this).transition().duration(300).attr("fill", "green");
+
+                tooltip.transition().duration(600).style("opacity", 1);
                 tooltip.html(`<strong>${d.properties.nm_meso}</strong>`)
                     .style("left", `${event.pageX + 5}px`)
                     .style("top", `${event.pageY - 5}px`);
             })
             .on("mouseout", function (event, d) {
                 if (!d3.select(this).classed("selected")) {
-                    d3.select(this).attr("fill", "#69b3a2");
+                    d3.select(this)
+                    .transition().duration(500)
+                    .attr("fill", "#69b3a2");
                 }
-                else {d3.select(this).attr("fill", "darkgreen");}
-                tooltip.transition().style("opacity", 0);
+                else {
+                    d3.select(this).transition().duration(500).attr("fill", "darkgreen");
+                }
+                tooltip.transition().duration(200).style("opacity", 0);
             })
             .on("click", function (event, d){
                 svgMap.selectAll("path")
                     .classed("selected", false)
+                    .transition().duration(200)
                     .attr("fill", "#69b3a2");
 
                 d3.select(this)
                     .classed("selected", true)
+                    .transition().duration(300)
                     .attr("fill", "darkgreen");
 
                 const filteredRegion = d.properties.nm_meso; 
