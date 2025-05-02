@@ -232,7 +232,7 @@ html.dark-mode .author-card img {
     position: absolute;
     right: 20px;
     top: 30px;
-    padding: 5px 10px;
+    padding: 2px 4px;
     border: none;
     border-radius: 8px;
     background-color: #f1f5f9;
@@ -240,21 +240,22 @@ html.dark-mode .author-card img {
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
-    width: 140px;
+    width: 90px;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
+    font-size: 0.6em;
 }
 
 html.dark-mode #theme-select {
     background-color: #1e293b;
     color: #f1f5f9;
 }
-/*---------------------------*/
 
 html.dark-mode a {
     color: lightblue; /* Cor ajustada para o tema escuro */
 }
+/*---------------------------*/
 
 
 /*-----------Chart-----------*/
@@ -266,7 +267,7 @@ html.dark-mode a {
 /*---------------------------*/
   
 
-/*-----------Map-----------*/
+/*------------Map------------*/
 #map-container {
     cursor: pointer;
 }
@@ -277,7 +278,7 @@ html.dark-mode a {
 /*---------------------------*/
 
 
-/*-----------Reset Button-----------*/
+/*--------ResetButton--------*/
 #control-panel {
     text-align: center;
     margin-top: 20px;
@@ -374,8 +375,86 @@ html.dark-mode .legend-text{
 
 /*---------------------------*/
 
+
+/*----------Outliers---------*/
+/* Estilo padrão (modo claro) */
+.outlier-point {
+    fill: #475569;
+    stroke: #a4a4a4;
+    cursor: pointer;
+}
+
+.outlier-point:hover {
+    stroke-width: 2;
+}
+
+/* Estilo no modo escuro */
+/* html.dark-mode .outlier-point {
+    fill: #475569; 
+    stroke: #f1f5f9;
+} */
+/*---------------------------*/
+
+
+/*----------Rótulos----------*/
+.y-label {
+    fill: black;
+}
+
+html.dark-mode .y-label {
+    fill: #f1f5f9;
+}
+
+.x-label{
+    fill: black;
+}
+
+html.dark-mode .x-label {
+    fill: #f1f5f9;
+}
+/*---------------------------*/
+
+
+/*----------BoxPlot----------*/
+.median {
+    stroke: #646464;
+    cursor: pointer;
+}
+
+.median:hover {
+    stroke: #646464;
+    stroke-width: 3px;
+}
+
+.q0-q1 {
+    stroke: #646464;
+    stroke-width: 2;
+}
+
+.q3-q4 {
+    stroke: #646464;
+    stroke-width: 2;
+}
+
+.q0-q0 {
+    stroke: #646464;
+    stroke-width: 2;
+}
+
+.q4-q4 {
+    stroke: #646464;
+    stroke-width: 2;
+}
+
+.box {
+    stroke: #646464;
+    stroke-width: 2;
+}
+/*---------------------------*/
+
+
 /*----------HeatMap----------*/
- #heatmaps {
+#heatmaps {
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -451,118 +530,6 @@ html.dark-mode .legend-text{
     color: #fff;
 }
 
-/*---------------------------*/
-
-/*-----------Outliers-------------*/
-/* Estilo padrão (modo claro) */
-.outlier-point {
-    fill: #475569;
-    stroke: #a4a4a4;
-    cursor: pointer;
-}
-
-.outlier-point:hover {
-    stroke-width: 2;
-}
-
-/* Estilo no modo escuro */
-/* html.dark-mode .outlier-point {
-    fill: #475569; 
-    stroke: #f1f5f9;
-} */
-/*---------------------------*/
-
-
-/*-----------Rótulos------------*/
-.y-label {
-    fill: black;
-}
-
-html.dark-mode .y-label {
-    fill: #f1f5f9;
-}
-
-.x-label{
-    fill: black;
-}
-
-html.dark-mode .x-label {
-    fill: #f1f5f9;
-}
-/*---------------------------*/
-
-
-/*-----------Median--------------*/
-.median {
-    stroke: #646464;
-    cursor: pointer;
-}
-
-.median:hover {
-    stroke: #646464;
-    stroke-width: 3px;
-}
-
-/* html.dark-mode .median {
-    stroke: #f1f5f9;
-} */
-/*---------------------------*/
-
-
-.q0-q1 {
-    stroke: #646464;
-    stroke-width: 2;
-}
-
-/* html.dark-mode .q0-q1 {
-    stroke: #f1f5f9;
-} */
-
-.q3-q4 {
-    stroke: #646464;
-    stroke-width: 2;
-}
-
-/* html.dark-mode .q3-q4 {
-    stroke: #f1f5f9;
-} */
-
-.q0-q0 {
-    stroke: #646464;
-    stroke-width: 2;
-}
-
-/* html.dark-mode .q0-q0 {
-    stroke: #f1f5f9;
-} */
-
-.q4-q4 {
-    stroke: #646464;
-    stroke-width: 2;
-}
-
-/* html.dark-mode .q4-q4 {
-    stroke: #f1f5f9;
-} */
-
-.box {
-    stroke: #646464;
-    stroke-width: 2;
-}
-
-/* html.dark-mode .box {
-    stroke: #f1f5f9;
-} */
-
-
-/* .project-graphic {
-	display:grid;
-	grid-template-columns : repeat(auto-fill, minmax(15em, 1fr));
-	min-width: 15em; 
-	max-width: 1fr; 
-} */
-
-
 @media (max-width: 768px) {
     #heatmaps {
         flex-direction: column;
@@ -584,4 +551,4 @@ html.dark-mode .x-label {
         height: auto;
      }
 }
-
+/*---------------------------*/

@@ -1,7 +1,4 @@
-/* ALTERAÇÃO PARA OUTROS TEMAS */
-
-const themeSelect = document.getElementById('theme-select');
-
+/* Dicionário para variáveis */
 const LOOKUP = {
     TP_SEXO: {
         M: "Masculino",
@@ -42,6 +39,10 @@ const LOOKUP = {
     }
 }
 
+
+/* Alteração para outros temas */
+const themeSelect = document.getElementById('theme-select');
+
 function applyTheme(theme) {
     const root = document.documentElement;
     root.classList.remove('dark-mode');
@@ -78,7 +79,14 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("variable2").selectedIndex = 0;
   });  
 
-/* GRÁFICOS INTERATIVOS */
+
+/* Margem padrão */
+const GLOBAL_MARGIN = { top: 30, right: 30, bottom: 50, left: 80 };
+const marginboxbar = { top: 20, right: 20, bottom: 40, left: 40 };
+const marginheatmap = { top: 20, right: 50, bottom: 100, left: 100 };
+  
+
+/* Gráficos interativos */
 
 // Carreaga os arquivos CSV de 2019 e 2020
 Promise.all([
@@ -102,7 +110,7 @@ Promise.all([
     const container = d3.select("#chart-container");
     const width = container.node().getBoundingClientRect().width;
     const height = 400;
-    const margin = { top: 20, right: 20, bottom: 40, left: 40 };
+    const margin = GLOBAL_MARGIN;
   
     const svg = container
         .append("svg")
@@ -127,7 +135,6 @@ Promise.all([
         .append("div")
         .attr("class", "tooltip");
 
-    let array;
     // Atualiza o gráfico com base na região selecionada
     function barCharts(region, column, filteredCategory) {
         let colorScale = d3.schemeCategory10;
@@ -485,7 +492,7 @@ Promise.all([
         const container = d3.select("#colorbar");
         container.selectAll("*").remove();
 
-        const margin = {left: 30, right: 30, top: 10, bottom: 20};  
+        const margin = { ...GLOBAL_MARGIN, left: 120, bottom: 80 };
         const width = 400
         const height = 20;
 
@@ -493,11 +500,11 @@ Promise.all([
             .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
             .attr("preserveAspectRatio", "xMidYMid meet")
 
-            const defs = svg.append("defs")
-            const grads = defs.append("linearGradient")
-                .attr("id", "legend-gradient")
-                .attr("x1", "0%").attr("y1", "0%")
-                .attr("x2", "100%").attr("y2", "0%");
+        const defs = svg.append("defs")
+        const grads = defs.append("linearGradient")
+            .attr("id", "legend-gradient")
+            .attr("x1", "0%").attr("y1", "0%")
+            .attr("x2", "100%").attr("y2", "0%");
 
         const n = 10;
         const [minVal, maxVal] = colorscale.domain();
@@ -515,7 +522,7 @@ Promise.all([
             .attr("y", margin.top)
             .attr("width", width)
             .attr("height", height)
-            .style("fill", "url(#legend-gradient)");
+            .style("fill", "url(#legend-gradient)");  
 
         const legendScale = d3.scaleLinear()
             .domain(colorscale.domain())
@@ -528,6 +535,15 @@ Promise.all([
         svg.append("g")
             .attr("transform", `translate(${margin.left},${height + margin.top})`)
             .call(axis);
+
+        svg.append("text")
+            .attr("class", "colorbar-label")
+            .attr("x", margin.left + width/2) 
+            .attr("y", height + margin.top + 30) 
+            .attr("text-anchor", "middle")
+            .style("font-size", "12px")
+            .style("font-family", "sans-serif")
+            .text("Quantidade de Inscrições");    
     }
 
     function updateHeatMap(region) {
@@ -538,7 +554,7 @@ Promise.all([
         let selected2 = document.getElementById("variable2").value;
 
         // Definição de proporções
-        const marginHeatmap = { top: 20, right: 50, bottom: 100, left: 100 };
+        const marginHeatmap = { ...GLOBAL_MARGIN, left: 110, bottom: 80 };
         const heatmapContainer = d3.select("#heatmap-container");
 
         const fullWidth = 500;
@@ -642,14 +658,16 @@ Promise.all([
                 svgHeatmap = d3.select("#heatmap2019")
                     .attr("width", "100%")
                     .attr("height", "auto")
-                    .attr("viewBox", `-30 0 ${fullWidth} ${fullHeight}`)
+                    //.attr("viewBox", `-30 0 ${fullWidth} ${fullHeight}`)
+                    .attr("viewBox", `-50 0 ${fullWidth + 50} ${fullHeight}`)
                     .attr("preserveAspectRatio", "xMidYMid meet");
             }
             else if (year === 2020) {
                 svgHeatmap = d3.select("#heatmap2020")
                     .attr("width", "100%")
                     .attr("height", "auto")
-                    .attr("viewBox", `-30 0 ${fullWidth} ${fullHeight}`)
+                    //.attr("viewBox", `-30 0 ${fullWidth} ${fullHeight}`)
+                    .attr("viewBox", `-50 0 ${fullWidth + 50} ${fullHeight}`)
                     .attr("preserveAspectRatio", "xMidYMid meet");
 
             }
@@ -699,18 +717,23 @@ Promise.all([
             g.append("g")
                 .attr("class", "x-axis")
                 .attr("transform", `translate(0,${height})`)
+                //.attr("transform", `translate(0,${height - 10})`)
                 .call(xAxis)
                 .selectAll("text")
                     .attr("transform", "rotate(-45)")
                     .attr("dx", "-0.6em")
                     .attr("dy", "0.25em")
+                    // .attr("dx", "-0.5em") 
+                    // .attr("dy", "0.15em")
                     .style("text-anchor", "end");
 
             g.append("g")
                 .attr("class", "y-axis")
+                .attr("transform", `translate(10,0)`)
                 .call(yAxis)
                 .selectAll("text")
                     .attr("dx", "-0.6em")
+                    //.attr("dx", "-0.4em")
                     .style("text-anchor", "end");
                     
             g.append("text")
