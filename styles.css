@@ -81,6 +81,15 @@ header {
     text-align: justify;
     padding: 0 1rem;
 }
+
+ul {
+    padding-left: 2rem;
+    list-style-position: inside;
+}
+
+h2 {
+    margin-top: 2rem;
+}
 /*---------------------------*/
 
 
