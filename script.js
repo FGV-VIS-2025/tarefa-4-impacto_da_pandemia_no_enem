@@ -102,7 +102,7 @@ Promise.all([
     const container = d3.select("#chart-container");
     const width = container.node().getBoundingClientRect().width;
     const height = 400;
-    const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+    const margin = { top: 20, right: 20, bottom: 40, left: 40 };
   
     const svg = container
         .append("svg")
@@ -198,7 +198,15 @@ Promise.all([
             .attr("text-anchor", "middle")
             .attr("x", widthBox / 2)
             .attr("y", heightBox - 6)
-            .text("Ano");
+            .text("Ano");        
+        
+        svg.append("text")
+            .attr("class", "y-label")
+            .attr("text-anchor", "middle")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -heightBox / 2)
+            .attr("y", margin.left / 2 - 10)
+            .text("Taxa de Presença");
     
     
         // Escala para subgrupos - usa displayCategories
@@ -266,20 +274,19 @@ Promise.all([
         allCategories.forEach((category, i) => {
             const legendGroup = legend.append("g")
                 .attr("class", "legend-item")
-                .attr("transform", `translate(0, ${i * 20})`)
-                .style("cursor", "pointer");
+                .attr("transform", `translate(0, ${i * 20})`);
     
             legendGroup.append("rect")
+                .attr("class", "legend-rect")
                 .attr("width", 15)
                 .attr("height", 15)
                 .attr("fill", colorScale[i % 10]);
     
             legendGroup.append("text")
+                .attr("class", "legend-text")
                 .attr("x", 20)
                 .attr("y", 12)
                 .text(LOOKUP[column][category])
-                .style("font-size", "12px")
-                .attr("fill", "black");
     
             legendGroup.on("click", function() {
                 barCharts(region, column, category);
@@ -683,7 +690,7 @@ Promise.all([
             .attr("class","axis-label")
             .attr("transform", "rotate(-90)")
             .attr("x", -height / 2)
-            .attr("y", -margin.left - 20)
+            .attr("y", -margin.left - 25)
             .attr("text-anchor", "middle")
             .text(selectedText2);
 
@@ -709,12 +716,14 @@ Promise.all([
         const category = document.getElementById("select-button").selectedIndex = 0;
         barCharts("all", category);
         boxPlot("all");
-        updateHeatMap("all", 2019);
-        updateHeatMap("all", 2020);
-        
+
         svgMap.selectAll("path").classed("selected", false).attr("fill", "#69b3a2");
         document.getElementById("variable1").selectedIndex = 0;
         document.getElementById("variable2").selectedIndex = 0;
+
+        updateHeatMap("all", 2019);
+        updateHeatMap("all", 2020);
+        
     });
     
     d3.select("#reset-button").style("display", "block");

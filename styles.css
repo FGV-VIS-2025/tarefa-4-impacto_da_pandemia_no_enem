@@ -252,9 +252,6 @@ html.dark-mode a {
 #chart-container {
     display: flex;
     justify-content: center;
-}
-
-#chart-container {
     cursor: pointer;
 }
 /*---------------------------*/
@@ -310,7 +307,7 @@ html.dark-mode a {
 }
 
 .legend {
-    font-family: Arial, sans-serif;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .legend-item {
@@ -318,13 +315,21 @@ html.dark-mode a {
 }
 
 .legend-rect {
-    stroke: #333; 
+    stroke: #272727; 
     stroke-width: 1;
 }
 
+html.dark-mode .legend-rect {
+    stroke: #a4a4a4; 
+}
+
 .legend-text {
-    fill: #646464; /* Cor do texto */
+    fill:  black; 
     font-size: 16px;
+}
+
+html.dark-mode .legend-text{
+    fill: white;
 }
 
 .legend-item:hover .legend-rect {
@@ -434,15 +439,19 @@ html.dark-mode a {
 /* Estilo padrão (modo claro) */
 .outlier-point {
     fill: #475569;
-    stroke: black;
+    stroke: #a4a4a4;
     cursor: pointer;
 }
 
+.outlier-point:hover {
+    stroke-width: 2;
+}
+
 /* Estilo no modo escuro */
-html.dark-mode .outlier-point {
+/* html.dark-mode .outlier-point {
     fill: #475569; 
     stroke: #f1f5f9;
-}
+} */
 /*---------------------------*/
 
 
@@ -467,60 +476,65 @@ html.dark-mode .x-label {
 
 /*-----------Median--------------*/
 .median {
-    stroke: black;
+    stroke: #646464;
     cursor: pointer;
 }
 
-html.dark-mode .median {
-    stroke: #f1f5f9;
+.median:hover {
+    stroke: #646464;
+    stroke-width: 3px;
 }
+
+/* html.dark-mode .median {
+    stroke: #f1f5f9;
+} */
 /*---------------------------*/
 
 
 .q0-q1 {
-    stroke: black;
+    stroke: #646464;
     stroke-width: 2;
 }
 
-html.dark-mode .q0-q1 {
+/* html.dark-mode .q0-q1 {
     stroke: #f1f5f9;
-}
+} */
 
 .q3-q4 {
-    stroke: black;
+    stroke: #646464;
     stroke-width: 2;
 }
 
-html.dark-mode .q3-q4 {
+/* html.dark-mode .q3-q4 {
     stroke: #f1f5f9;
-}
+} */
 
 .q0-q0 {
-    stroke: black;
+    stroke: #646464;
     stroke-width: 2;
 }
 
-html.dark-mode .q0-q0 {
+/* html.dark-mode .q0-q0 {
     stroke: #f1f5f9;
-}
+} */
 
 .q4-q4 {
-    stroke: black;
+    stroke: #646464;
     stroke-width: 2;
 }
 
-html.dark-mode .q4-q4 {
+/* html.dark-mode .q4-q4 {
     stroke: #f1f5f9;
-}
+} */
 
 .box {
-    stroke: black;
+    stroke: #646464;
     stroke-width: 2;
 }
 
-html.dark-mode .box {
+/* html.dark-mode .box {
     stroke: #f1f5f9;
-}
+} */
 
 
 /* .project-graphic {
