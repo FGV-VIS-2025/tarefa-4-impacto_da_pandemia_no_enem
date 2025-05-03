@@ -426,6 +426,46 @@ html.dark-mode .x-label {
     stroke-width: 3px;
 }
 
+.q1-line {
+    stroke: #646464;
+    cursor: pointer;
+}
+
+.q1-line:hover {
+    stroke: #646464;
+    stroke-width: 3px;
+}
+
+.q3-line {
+    stroke: #646464;
+    cursor: pointer;
+}
+
+.q3-line:hover {
+    stroke: #646464;
+    stroke-width: 3px;
+}
+
+.q4-line {
+    stroke: #646464;
+    cursor: pointer;
+}
+
+.q4-line:hover {
+    stroke: #646464;
+    stroke-width: 3px;
+}
+
+.q0-line {
+    stroke: #646464;
+    cursor: pointer;
+}
+
+.q0-line:hover {
+    stroke: #646464;
+    stroke-width: 3px;
+}
+
 .q0-q1 {
     stroke: #646464;
     stroke-width: 2;
