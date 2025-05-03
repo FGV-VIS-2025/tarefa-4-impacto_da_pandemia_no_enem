@@ -134,13 +134,13 @@ Promise.all([
         .attr("class", "tooltip");
 
     // Atualiza o gráfico com base na região selecionada
-    function barCharts(region, column, filteredCategory) {
-        let colorScale = d3.schemeCategory10;
-        svg.selectAll(".legend").remove();
-        
-        // Filtra os dados conforme a região
-        const filteredData2019 = (region === "all") ? data2019 : data2019.filter(d => d.MESORREGIAO === region);
-        const filteredData2020 = (region === "all") ? data2020 : data2020.filter(d => d.MESORREGIAO === region);
+    function barCharts(regions, column, filteredCategory) {
+        let colorScale = d3.schemeCategory10; 
+        svg.selectAll(".legend").remove(); 
+         
+        // Filtra os dados conforme a região 
+        const filteredData2019 = (regions.length === 0) ? data2019 : data2019.filter(d => regions.includes(d.MESORREGIAO));
+        const filteredData2020 = (regions.length === 0) ? data2020 : data2020.filter(d => regions.includes(d.MESORREGIAO));
     
         // Obtém TODAS as categorias possíveis (não apenas as filtradas)
         let allCategories = [...new Set(data2019.map(d => d[column]))].sort((a, b) => parseInt(a) - parseInt(b));
@@ -250,23 +250,23 @@ Promise.all([
             })
             .on("click", function(event, d) {
                 // Alterna o filtro: se já está filtrado, mostra tudo; senão, filtra
-                barCharts(region, column, filteredCategory === d.key ? null : d.key);
+                barCharts(regions, column, filteredCategory === d.key ? null : d.key);
             });
     
         if (column && column !== "all"){
-            createLegend(colorScale, column, region, allCategories, filteredCategory);
+            createLegend(colorScale, column, regions, allCategories, filteredCategory);
         }
 
         const title = d3.select("#barchart-title");
-        if (region === "all") {
+        if (regions.length === 0) {
             title.text(" Quantidade de Participantes do ENEM em Minas Gerais")
         }
         else {
-            title.text(" Quantidade de Participantes do ENEM na região " + region.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase()))
+            title.text(" Quantidade de Participantes do ENEM na região ") // + region.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase()))
         }    
     }
     
-    function createLegend(colorScale, column, region, allCategories, currentFilter) {
+    function createLegend(colorScale, column, regions, allCategories, currentFilter) {
         svg.selectAll(".legend").remove();
         
         // Se está filtrado, não mostra legenda (ou mostra apenas o item filtrado)
@@ -294,18 +294,18 @@ Promise.all([
                 .text(LOOKUP[column][category])
     
             legendGroup.on("click", function() {
-                barCharts(region, column, category);
+                barCharts(regions, column, category);
             });
         });
     }
 
-    function boxPlot(region) {
+    function boxPlot(regions) {
         // Primeiro limpa o SVG para redesenhar
         svgBox.selectAll("*").remove();
         
         // Filtra os dados conforme a região
-        const filteredData2019 = (region === "all") ? data2019Grouped : data2019Grouped.filter(d => d.MESORREGIAO === region);
-        const filteredData2020 = (region === "all") ? data2020Grouped : data2020Grouped.filter(d => d.MESORREGIAO === region);
+        const filteredData2019 = (regions.length === 0) ? data2019Grouped : data2019Grouped.filter(d => regions.includes(d.MESORREGIAO));
+        const filteredData2020 = (regions.length === 0) ? data2020Grouped : data2020Grouped.filter(d => regions.includes(d.MESORREGIAO));
     
         // Extrai os valores de presença como números
         const presenca2019 = filteredData2019.map(d => +d.PRESENCA);
@@ -478,11 +478,11 @@ Promise.all([
 
         // Para alterar o título
         const title = d3.select("#boxplot-title");
-        if (region === "all") {
+        if (regions.length === 0) {
             title.text("Distribuição da Média de Presença por Cidade em Minas Gerais")
         }
         else {
-            title.text("Distribuição da Média de Presença por Cidade para a região " + region.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase()))
+            title.text("Distribuição da Média de Presença por Cidade para a região ") // + regions.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase()))
         }    
     }
 
@@ -544,7 +544,7 @@ Promise.all([
             .text("Quantidade de Inscrições");    
     }
 
-    function updateHeatMap(region) {
+    function updateHeatMap(regions) {
         const years = [2019, 2020];
 
         // Obtém por meio do select do HTML as variáveis dos eixos
@@ -561,8 +561,8 @@ Promise.all([
         const width = fullWidth - marginHeatmap.left - marginHeatmap.right;
         const height = fullHeight - marginHeatmap.top - marginHeatmap.bottom;
 
-        filteredData2019 = (region === "all") ? data2019 : data2019.filter(d => d.MESORREGIAO === region);
-        filteredData2020 = (region === "all") ? data2020 : data2020.filter(d => d.MESORREGIAO === region);
+        const filteredData2019 = (regions.length === 0) ? data2019 : data2019.filter(d => regions.includes(d.MESORREGIAO));
+        const filteredData2020 = (regions.length === 0) ? data2020 : data2020.filter(d => regions.includes(d.MESORREGIAO));
 
         let counts2019 = {};
         filteredData2019.forEach(d => {
@@ -753,42 +753,47 @@ Promise.all([
             updateColorbar(color);
     }
 
-    let currentRegion = "all";
-
-    barCharts("all"); 
-    boxPlot("all");
-    updateHeatMap("all");
+    barCharts([]); 
+    boxPlot([]);
+    updateHeatMap([]);
     
 
     d3.select("#select-button").on("change", () => {
         const category = document.getElementById("select-button").value;
-        barCharts("all", category); 
+        barCharts([], category); 
     });
 
     // Configuração do botão "Remover Filtros"
     d3.select("#reset-button").on("click", () => {
-        const category = document.getElementById("select-button").selectedIndex = 0;
-        barCharts("all", category);
-        boxPlot("all");
-
-        svgMap.selectAll("path").classed("selected", false).attr("fill", "#69b3a2");
+        const selectButton = document.getElementById("select-button");
+        selectButton.selectedIndex = 0;
+        const category = selectButton.options[0].value;
+    
+        barCharts([], category);
+        boxPlot([]);
+    
+        svgMap.selectAll("path")
+              .classed("selected", false)
+              .transition().duration(300)
+              .attr("fill", "#69b3a2");
+              
         document.getElementById("variable1").selectedIndex = 0;
         document.getElementById("variable2").selectedIndex = 0;
 
-        updateHeatMap("all");
-        updateHeatMap("all");
+        updateHeatMap([]);
+        updateHeatMap([]);
         
     });
     
     d3.select("#reset-button").style("display", "block");
 
     d3.select("#variable1").on("change", () => {
-        updateHeatMap(currentRegion); 
-        updateHeatMap(currentRegion);
+        updateHeatMap([]); 
+        updateHeatMap([]);
     });
     d3.select("#variable2").on("change", () => {
-        updateHeatMap(currentRegion); 
-        updateHeatMap(currentRegion);
+        updateHeatMap([]); 
+        updateHeatMap([]);
     });
 
     const containerMap = d3.select("#map-container")
@@ -837,23 +842,27 @@ Promise.all([
                 }
                 tooltip.transition().duration(200).style("opacity", 0);
             })
-            .on("click", function (event, d){
-                svgMap.selectAll("path")
-                    .classed("selected", false)
-                    .transition().duration(200)
-                    .attr("fill", "#69b3a2");
-
-                d3.select(this)
-                    .classed("selected", true)
+            .on("click", function (event, d) {
+                // Fazer o toggle da seleção para a região clicada
+                const current = d3.select(this);
+                const isSelected = current.classed("selected");
+                
+                current.classed("selected", !isSelected)
                     .transition().duration(300)
-                    .attr("fill", "darkgreen");
-
-                const filteredRegion = d.properties.nm_meso; 
+                    .attr("fill", !isSelected ? "darkgreen" : "#69b3a2");
+    
+                // Opcional: atualizar a visualização com as regiões atualmente selecionadas
+                const selectedRegions = [];
+                svgMap.selectAll("path.selected")
+                    .each((d) => {
+                        selectedRegions.push(d.properties.nm_meso);
+                    });
+                
                 const category = document.getElementById("select-button").value;
-                barCharts(filteredRegion, category);
-                boxPlot(filteredRegion);
-                updateHeatMap(filteredRegion, 2019);
-                updateHeatMap(filteredRegion, 2020);
+                barCharts(selectedRegions, category);
+                boxPlot(selectedRegions);
+                updateHeatMap(selectedRegions, 2019);
+                updateHeatMap(selectedRegions, 2020);
             });
     });
 });
