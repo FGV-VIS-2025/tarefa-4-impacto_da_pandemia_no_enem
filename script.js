@@ -237,16 +237,17 @@ Promise.all([
                 };
             }))
             .join("rect")
+            .attr("class", "bar")
             .attr("x", d => xSubgroup(d.key))
             .attr("y", d => y(d.value))
             .attr("width", xSubgroup.bandwidth())
             .attr("height", d => y(0) - y(d.value))
             .attr("fill", (d, i) => colorScale[allCategories.indexOf(d.key) % 10])
             .on("mouseover", function(event, d) {
-                d3.select(this).transition().duration(200).attr("stroke", "black");
+                d3.select(this).transition().duration(200).classed("hovered", true);
             })
             .on("mouseout", function(event, d) {
-                d3.select(this).transition().duration(200).attr("stroke", "none");
+                d3.select(this).transition().duration(200).classed("hovered", false);
             })
             .on("click", function(event, d) {
                 // Alterna o filtro: se já está filtrado, mostra tudo; senão, filtra
@@ -269,35 +270,57 @@ Promise.all([
     function createLegend(colorScale, column, regions, allCategories, currentFilter) {
         svg.selectAll(".legend").remove();
         
-        // Se está filtrado, não mostra legenda (ou mostra apenas o item filtrado)
-        if (currentFilter) return;
-        
         const legend = svg.append("g")
             .attr("class", "legend")
             .attr("transform", `translate(${width - margin.right - 100},${margin.top})`);
     
-        allCategories.forEach((category, i) => {
+        if (currentFilter) {
+            let index = allCategories.indexOf(currentFilter);
+            if (index < 0) index = 0; 
+    
             const legendGroup = legend.append("g")
                 .attr("class", "legend-item")
-                .attr("transform", `translate(0, ${i * 20})`);
+                .attr("transform", `translate(0, 0)`);
     
             legendGroup.append("rect")
                 .attr("class", "legend-rect")
                 .attr("width", 15)
                 .attr("height", 15)
-                .attr("fill", colorScale[i % 10]);
+                .attr("fill", colorScale[index % 10]);
     
             legendGroup.append("text")
                 .attr("class", "legend-text")
                 .attr("x", 20)
                 .attr("y", 12)
-                .text(LOOKUP[column][category])
+                .text(LOOKUP[column][currentFilter]);
     
             legendGroup.on("click", function() {
-                barCharts(regions, column, category);
+                barCharts(regions, column, null);
             });
-        });
-    }
+        } else {
+            allCategories.forEach((category, i) => {
+                const legendGroup = legend.append("g")
+                    .attr("class", "legend-item")
+                    .attr("transform", `translate(0, ${i * 20})`);
+    
+                legendGroup.append("rect")
+                    .attr("class", "legend-rect")
+                    .attr("width", 15)
+                    .attr("height", 15)
+                    .attr("fill", colorScale[i % 10]);
+    
+                legendGroup.append("text")
+                    .attr("class", "legend-text")
+                    .attr("x", 20)
+                    .attr("y", 12)
+                    .text(LOOKUP[column][category]);
+    
+                legendGroup.on("click", function() {
+                    barCharts(regions, column, category);
+                });
+            });
+        }
+    }    
 
     function boxPlot(regions) {
         // Primeiro limpa o SVG para redesenhar
@@ -840,7 +863,7 @@ Promise.all([
               .classed("selected", false)
               .transition().duration(300)
               .attr("fill", "#69b3a2");
-              
+
         document.getElementById("variable1").selectedIndex = 0;
         document.getElementById("variable2").selectedIndex = 0;
 

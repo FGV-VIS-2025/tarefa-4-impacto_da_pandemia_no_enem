@@ -264,6 +264,22 @@ html.dark-mode a {
     justify-content: center;
     cursor: pointer;
 }
+
+.bar {
+    stroke: none;
+    transition: 0.2s;
+}
+
+.bar:hover {
+    stroke: #272727;
+    stroke-width: 2px;
+}
+
+html.dark-mode 
+.bar:hover {
+    stroke: #bfbfbf;
+    stroke-width: 2px;
+}
 /*---------------------------*/
   
 
@@ -325,12 +341,12 @@ html.dark-mode a {
 }
 
 .legend-rect {
-    stroke: #272727; 
+    stroke: black; 
     stroke-width: 1;
 }
 
 html.dark-mode .legend-rect {
-    stroke: #a4a4a4; 
+    stroke: #bfbfbf; 
 }
 
 .legend-text {
@@ -399,6 +415,7 @@ html.dark-mode .legend-text{
 /*----------Rótulos----------*/
 .y-label {
     fill: black;
+    font-weight: normal;
 }
 
 html.dark-mode .y-label {
@@ -407,6 +424,7 @@ html.dark-mode .y-label {
 
 .x-label{
     fill: black;
+    font-weight: normal;
 }
 
 html.dark-mode .x-label {
