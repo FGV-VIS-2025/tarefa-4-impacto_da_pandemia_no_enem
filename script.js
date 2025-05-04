@@ -44,7 +44,7 @@ const LOOKUP = {
         "D": "De 2 a 3 salários",
         "E": "De 3 a 4 salários",
         "F": "De 4 a 5 salários",
-        "G": "Acima de 5 salaríos"
+        "G": "Acima de 5 salários"
     },
     Q022: {
         "A": "Não Possui",
@@ -280,7 +280,7 @@ Promise.all([
         
         const legend = svg.append("g")
             .attr("class", "legend")
-            .attr("transform", `translate(${width - margin.right - 100},${margin.top})`);
+            .attr("transform", `translate(${width - margin.right - 140},${margin.top})`);
     
         if (currentFilter) {
             let index = allCategories.indexOf(currentFilter);
