@@ -36,6 +36,33 @@ const LOOKUP = {
     TP_LOCALIZACAO_ESC: {
         "1.0": "Urbana",
         "2.0": "Rural"
+    },
+    Q006: {
+        "A": "Nenhuma Renda",
+        "B": "Até 1 salário",
+        "C": "De 1 a 2 salários",
+        "D": "De 2 a 3 salários",
+        "E": "De 3 a 4 salários",
+        "F": "De 4 a 5 salários",
+        "G": "Acima de 5 salaríos"
+    },
+    Q022: {
+        "A": "Não Possui",
+        "B": "Um",
+        "C": "Dois",
+        "D": "Três",
+        "E": "Quatro ou mais" 
+    },
+    Q024: {
+        "A": "Não Possui",
+        "B": "Um",
+        "C": "Dois",
+        "D": "Três",
+        "E": "Quatro ou mais" 
+    },
+    Q025: {
+        "A": "Não",
+        "B": "Sim"
     }
 }
 
@@ -142,36 +169,17 @@ Promise.all([
         const filteredData2019 = (regions.length === 0) ? data2019 : data2019.filter(d => regions.includes(d.MESORREGIAO));
         const filteredData2020 = (regions.length === 0) ? data2020 : data2020.filter(d => regions.includes(d.MESORREGIAO));
     
-        // Obtém TODAS as categorias possíveis (não apenas as filtradas)
-        let allCategories = [...new Set(data2019.map(d => d[column]))].sort((a, b) => parseInt(a) - parseInt(b));
-       
         const subscriptions = [
             {year: "2019", total: filteredData2019.length},
             {year: "2020", total: filteredData2020.length}
         ];
     
-        if (column === "TP_FAIXA_ETARIA") {
-            subscriptions[0][column + "6"] = 0;
-            subscriptions[1][column + "6"] = 0;
-            allCategories.forEach((category, index) => { 
-                if (index < 6) {
-                subscriptions[0][column + index] = filteredData2019.filter(d => d[column] === category).length;
-                subscriptions[1][column + index] = filteredData2020.filter(d => d[column] === category).length;   
-                }
-                else {    
-                    subscriptions[0][column + "6"] += filteredData2019.filter(d => d[column] === category).length;
-                    subscriptions[1][column + "6"] += filteredData2020.filter(d => d[column] === category).length;   
-                }  
-            });
-            allCategories = allCategories.slice(0, 6);
-        }
-        else {
-            // Mapeia todas as categorias possíveis
-            allCategories.forEach((category, index) => {
-                subscriptions[0][column + index] = filteredData2019.filter(d => d[column] === category).length;
-                subscriptions[1][column + index] = filteredData2020.filter(d => d[column] === category).length;
-            });
-        }
+        const allCategories = [...new Set(data2019.map(d => d[column]))].sort();
+            
+        allCategories.forEach((category, index) => {
+            subscriptions[0][column + index] = filteredData2019.filter(d => d[column] === category).length;
+            subscriptions[1][column + index] = filteredData2020.filter(d => d[column] === category).length;
+        });
      
         // Define as categorias que serão exibidas
         const displayCategories = filteredCategory ? [filteredCategory] : allCategories;
@@ -679,24 +687,8 @@ Promise.all([
         filteredDataYears = {2019: filteredData2019, 2020: filteredData2020};
 
         years.forEach(year => {
-            let cats1;
-            let cats2;
-            if (selected1 === "TP_FAIXA_ETARIA") {
-                cats1 = [...new Set(filteredDataYears[year].map(d => d[selected1]))]
-                                                    .sort((a, b) => parseInt(a) - parseInt(b))
-                                                    .slice(0, 6);
-            }
-            else {
-                cats1 = [...new Set(filteredDataYears[year].map(d => d[selected1]))].sort();
-            }
-            if (selected2 === "TP_FAIXA_ETARIA") {
-                cats2 = [...new Set(filteredDataYears[year].map(d => d[selected2]))]
-                                                    .sort((a, b) => parseInt(a) - parseInt(b))
-                                                    .slice(0, 6);          
-            }
-            else {
-                cats2 = [...new Set(filteredDataYears[year].map(d => d[selected2]))].sort();
-            }
+            const cats1 = [...new Set(filteredDataYears[year].map(d => d[selected1]))].sort();
+            const cats2 = [...new Set(filteredDataYears[year].map(d => d[selected2]))].sort();
 
             const map1 = LOOKUP[selected1] || (d=>d);
             const map2 = LOOKUP[selected2] || (d=>d);
