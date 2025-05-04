@@ -663,6 +663,7 @@ Promise.all([
         filteredData2019.forEach(d => {
             const variable1 = d[selected1];
             const variable2 = d[selected2];
+            if (variable1 === "" || variable2 === "") return; // Ignora valores vazios
             const key = `${variable1}-${variable2}`
             counts2019[key] = (counts2019[key] || 0) + 1;
         });
@@ -671,6 +672,7 @@ Promise.all([
         filteredData2020.forEach(d => {
             const variable1 = d[selected1];
             const variable2 = d[selected2];
+            if (variable1 === "" || variable2 === "") return; // Ignora valores vazios
             const key = `${variable1}-${variable2}`
             counts2020[key] = (counts2020[key] || 0) + 1;
         });
@@ -687,8 +689,8 @@ Promise.all([
         filteredDataYears = {2019: filteredData2019, 2020: filteredData2020};
 
         years.forEach(year => {
-            const cats1 = [...new Set(filteredDataYears[year].map(d => d[selected1]))].sort();
-            const cats2 = [...new Set(filteredDataYears[year].map(d => d[selected2]))].sort();
+            const cats1 = [...new Set(filteredDataYears[year].map(d => d[selected1]))].filter(d => d !== "").sort();
+            const cats2 = [...new Set(filteredDataYears[year].map(d => d[selected2]))].filter(d => d !== "").sort();
 
             const map1 = LOOKUP[selected1] || (d=>d);
             const map2 = LOOKUP[selected2] || (d=>d);
@@ -806,7 +808,7 @@ Promise.all([
 
             g.append("g")
                 .attr("class", "y-axis")
-                .attr("transform", `translate(10,0)`)
+                .attr("transform", `translate(0,0)`)
                 .call(yAxis)
                 .selectAll("text")
                     .attr("dx", "-0.6em")
