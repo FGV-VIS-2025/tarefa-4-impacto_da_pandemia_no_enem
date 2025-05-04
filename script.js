@@ -161,7 +161,7 @@ Promise.all([
         .attr("class", "tooltip");
 
     // Atualiza o gráfico com base na região selecionada
-    function barCharts(regions, column, filteredCategory) {
+    function barCharts(regions, column = "all", filteredCategory) {
         let colorScale = d3.schemeCategory10; 
         svg.selectAll(".legend").remove(); 
          
@@ -252,10 +252,27 @@ Promise.all([
             .attr("height", d => y(0) - y(d.value))
             .attr("fill", (d, i) => colorScale[allCategories.indexOf(d.key) % 10])
             .on("mouseover", function(event, d) {
-                d3.select(this).transition().duration(200).classed("hovered", true);
+                d3.select(this).transition().duration(200);
+                tooltip.transition().duration(600).style("opacity", 1);
+                if (column !== "all") {
+                    tooltip.html(`<strong>Ano:</strong> ${d.year}<br/>
+                    <strong>Categoria:</strong> ${LOOKUP[column][d.key]}<br/>
+                    <strong>Nº de inscrições:</strong> ${d.value}`
+                    )
+                    .style("left", `${event.pageX + 5}px`)
+                    .style("top", `${event.pageY - 5}px`);
+                }
+                else{
+                    tooltip.html(`<strong>Ano:</strong> ${d.year}<br/>
+                        <strong>N° inscrições:</strong> ${d.value}`
+                        )
+                        .style("left", `${event.pageX + 5}px`)
+                        .style("top", `${event.pageY - 5}px`);
+                }
             })
             .on("mouseout", function(event, d) {
-                d3.select(this).transition().duration(200).classed("hovered", false);
+                d3.select(this).transition().duration(200);
+                tooltip.transition().duration(400).style("opacity", 0);
             })
             .on("click", function(event, d) {
                 // Alterna o filtro: se já está filtrado, mostra tudo; senão, filtra
@@ -271,7 +288,7 @@ Promise.all([
             title.text(" Quantidade de Participantes do ENEM em Minas Gerais")
         }
         else {
-            title.text(" Quantidade de Participantes do ENEM na região ") // + region.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase()))
+            title.text(" Quantidade de Inscrições do ENEM na(s) região(ões) selecionada(s)")
         }    
     }
     
@@ -577,7 +594,7 @@ Promise.all([
             title.text("Distribuição da Média de Presença por Cidade em Minas Gerais")
         }
         else {
-            title.text("Distribuição da Média de Presença por Cidade para a região ") // + regions.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase()))
+            title.text("Distribuição da Média de Presença por Cidade para a(s) região(ões) selecionada(s)")
         }    
     }
 
@@ -770,13 +787,13 @@ Promise.all([
                         const label2 = map2[d.v2] ||  d.v2;
 
                         if (!label1 && !label2) {
-                            tooltip.style("opacity", 1).html(`<strong>Total</strong><br/><em>${d.value}</em> participante(s)`);}
+                            tooltip.style("opacity", 1).html(`<strong>Total</strong><br/><em>${d.value}</em> Inscrições`);}
                         else if (!label1){
-                            tooltip.style("opacity", 1).html(`<strong>Total: ${label2}</strong><br/><em>${d.value}</em> participante(s)`);}
+                            tooltip.style("opacity", 1).html(`<strong>Total: ${label2}</strong><br/><em>${d.value}</em> Inscrições`);}
                         else if (!label2){
-                            tooltip.style("opacity", 1).html(`<strong>Total: ${label1}</strong><br/><em>${d.value}</em> participante(s)`);}
+                            tooltip.style("opacity", 1).html(`<strong>Total: ${label1}</strong><br/><em>${d.value}</em> Inscrições`);}
                         else {
-                            tooltip.style("opacity", 1).html(`<strong>Total: ${label1} × ${label2}</strong><br/><em>${d.value}</em> participante(s)`);}
+                            tooltip.style("opacity", 1).html(`<strong>Total: ${label1} × ${label2}</strong><br/><em>${d.value}</em> Inscrições`);}
                     })
                     .on("mousemove", (event, d) => {
                         tooltip.style("left", `${event.pageX + 10}px`).style("top", `${event.pageY - 25}px`);

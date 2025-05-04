@@ -252,12 +252,12 @@ html.dark-mode a {
 #chart-container {
     display: flex;
     justify-content: center;
-    cursor: pointer;
 }
 
 .bar {
     stroke: none;
     transition: 0.2s;
+    cursor: pointer;
 }
 
 .bar:hover {
