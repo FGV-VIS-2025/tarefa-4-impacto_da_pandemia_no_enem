@@ -37,87 +37,83 @@
   </header>
 
   <main class="main-content">
-    <h1 class="main-title">Análise</h1>
-    <p>Este projeto analisa os impactos da pandemia no ENEM entre os anos de 2019 e 2020.</p>
-
-    <br><br>
-    <h2>Minas Gerais por Mesorregiões</h2>
-    <h3>Selecione uma região para filtrar</h3>
-    <div id="map-container" style="margin: 0 auto; width: 100%; max-width: 800px; height: auto;"></div>
-
-    <div id="control-panel">
-        <button id="reset-button">Remover Filtros</button>
-    </div>
-    <br><br>
-    <br><br>
-    <br><br>
-
-    <section class="project-graphic">
-        <h2 id="barchart-title"></h2>
-        <select id="select-button">
-          <option value="all">- Selecione uma variável -</option>
-          <option value="TP_COR_RACA">Cor ou Raça</option>
-          <option value="TP_ESTADO_CIVIL">Estado Civíl</option>
-          <option value="TP_FAIXA_ETARIA">Faixa Etária</option>
-          <option value="TP_LOCALIZACAO_ESC">Localização da Escola</option>
-          <option value="TP_SEXO">Sexo</option>
-          <option value="TP_ESCOLA">Tipo de escola</option>
-        </select>
-        <div id="chart-container" style="margin: 0 auto; width: 100%; max-width: 800px; height: auto;"></div>
-        <br><br>
-        <br><br>
-        <br><br>
-        <h2 id="boxplot-title"></h2>
-        <div id="boxplot-container" style="margin: 0 auto; width: 100%; max-width: 800px; height: auto;"></div>
-        <br><br>
-        <br><br>
-        <br><br>
-      </section>
-      <h2 id="heatmap-title">Quantidade de inscrições no ENEM por variáveis e regiões selecionadas</h2>
-      <div>
-        <text>Eixo X: </text>
-        <select id="variable1">
-          <option value="all">- Selecione uma variável -</option>
-          <option value="TP_COR_RACA">Cor ou Raça</option>
-          <option value="TP_ESTADO_CIVIL">Estado Civíl</option>
-          <option value="TP_FAIXA_ETARIA">Faixa Etária</option>
-          <option value="TP_LOCALIZACAO_ESC">Localização da Escola</option>
-          <option value="TP_SEXO">Sexo</option>
-          <option value="TP_ESCOLA">Tipo de escola</option>
-        </select>
-      </div>
-      <div style="margin-top: 5px;">
-        <text>Eixo Y: </text>
-        <select id="variable2">
-          <option value="all">- Selecione uma variável -</option>
-          <option value="TP_COR_RACA">Cor ou Raça</option>
-          <option value="TP_ESTADO_CIVIL">Estado Civíl</option>
-          <option value="TP_FAIXA_ETARIA">Faixa Etária</option>
-          <option value="TP_LOCALIZACAO_ESC">Localização da Escola</option>
-          <option value="TP_SEXO">Sexo</option>
-          <option value="TP_ESCOLA">Tipo de escola</option>
-        </select>
-    </div>
-
-    <section class="heatmap-container">
-      <div id="heatmaps", style="margin: 0 auto; width: 100%; max-width: 800px; height: auto; display:flex; gap: 20px;">
-        <div class="heatmap-wraper">
-          <h3>2019</h3>
-          <svg id="heatmap2019"></svg>
-        </div>
-        <div>
-          <h3>2020</h3>
-          <svg id="heatmap2020"></svg>
+    <div class="layout">
+  
+      <!-- Coluna esquerda fixa: Mapa -->
+      <div class="map-pane">
+        <h2>Minas Gerais por Mesorregiões</h2>
+        <h3>Selecione uma região para filtrar</h3>
+        <div id="map-container"></div>
+        <div id="control-panel">
+          <button id="reset-button">Remover Filtros</button>
         </div>
       </div>
-      <div id="colorbar">
-        <svg id="colorbar"></svg>
+  
+      <!-- Coluna direita com gráficos e seções -->
+      <div class="charts-pane">
+        <section class="project-graphic">
+          <h2 id="barchart-title"></h2>
+          <select id="select-button">
+            <option value="all">- Selecione uma variável -</option>
+            <option value="TP_COR_RACA">Cor ou Raça</option>
+            <option value="TP_ESTADO_CIVIL">Estado Civíl</option>
+            <option value="TP_FAIXA_ETARIA">Faixa Etária</option>
+            <option value="TP_LOCALIZACAO_ESC">Localização da Escola</option>
+            <option value="TP_SEXO">Sexo</option>
+            <option value="TP_ESCOLA">Tipo de escola</option>
+          </select>
+          <div id="chart-container"></div>
+  
+          <h2 id="boxplot-title"></h2>
+          <div id="boxplot-container"></div>
+        </section>
+  
+        <section class="heatmap-container">
+          <h2 id="heatmap-title">Quantidade de inscrições no ENEM por variáveis e regiões selecionadas</h2>
+          <div>
+            <label>Eixo X:</label>
+            <select id="variable1">
+              <option value="all">- Selecione uma variável -</option>
+              <option value="TP_COR_RACA">Cor ou Raça</option>
+              <option value="TP_ESTADO_CIVIL">Estado Civíl</option>
+              <option value="TP_FAIXA_ETARIA">Faixa Etária</option>
+              <option value="TP_LOCALIZACAO_ESC">Localização da Escola</option>
+              <option value="TP_SEXO">Sexo</option>
+              <option value="TP_ESCOLA">Tipo de escola</option>
+            </select>
+          </div>
+          <div>
+            <label>Eixo Y:</label>
+            <select id="variable2">
+              <option value="all">- Selecione uma variável -</option>
+              <option value="TP_COR_RACA">Cor ou Raça</option>
+              <option value="TP_ESTADO_CIVIL">Estado Civíl</option>
+              <option value="TP_FAIXA_ETARIA">Faixa Etária</option>
+              <option value="TP_LOCALIZACAO_ESC">Localização da Escola</option>
+              <option value="TP_SEXO">Sexo</option>
+              <option value="TP_ESCOLA">Tipo de escola</option>
+            </select>
+          </div>
+  
+          <div id="heatmaps">
+            <div class="heatmap-wraper">
+              <h3>2019</h3>
+              <svg id="heatmap2019"></svg>
+            </div>
+            <div>
+              <h3>2020</h3>
+              <svg id="heatmap2020"></svg>
+            </div>
+          </div>
+          <div id="colorbar">
+            <svg id="colorbar"></svg>
+          </div>
+        </section>
       </div>
-    </section>
-    </section>  
-
-    <section class="project-description">
+  
+    </div>
   </main>
+  
 
   <script src="script.js"></script>
 

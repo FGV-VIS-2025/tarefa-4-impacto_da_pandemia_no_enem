@@ -610,3 +610,39 @@ html.dark-mode .x-label {
      }
 }
 /*---------------------------*/
+
+
+.layout {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  /* Coluna do mapa */
+.map-pane {
+    flex: 1;
+    max-width: 700px;
+    position: sticky;
+    top: 100px;
+    align-self: flex-start;
+    background-color: #f8f8f8;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  }
+  
+  /* Coluna dos gráficos */
+.charts-pane {
+    flex: 3;
+    overflow-x: hidden;
+  }
+  
+  /* Gráficos */
+#map-container, #chart-container, #boxplot-container, #heatmap2019, #heatmap2020, #colorbar {
+    width: 100%;
+    max-width: 2000px;
+    margin: 0 auto;
+    height: auto;
+  }
+  
