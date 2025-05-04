@@ -130,7 +130,8 @@ Guilherme Moreira Castilho - @GuilhermeCastilho02
 
 Samuel Corrêa Lima - @samullima
 - Desenvolvimento dos HTMLs e CSS - 7h
-- Implementação do boxplot de média de desistências das cidades por região selecioanda. - 8h
+- Implementação do boxplot interativo - 8h
+- Análise da média de desistências das cidades por região - 10min
 
 Além disso, todos os membros contribuíram para otimizações em todas as partes do trabalho, tais como deixar as visualizaçoes mais 
 flúidas, alterações estéticas, etc. Todos também auxiliaram na solução de problemas pontuais em todas as visualizações.
