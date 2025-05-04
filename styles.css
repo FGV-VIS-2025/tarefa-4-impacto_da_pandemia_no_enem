@@ -230,8 +230,10 @@ html.dark-mode .author-card img {
 
 #theme-select {
     position: absolute;
-    right: 20px;
-    top: 30px;
+    /* right: 20px;
+    top: 30px; */
+    right: 5px;
+    bottom: 5px;
     padding: 2px 4px;
     border: none;
     border-radius: 8px;
@@ -551,6 +553,10 @@ html.dark-mode .x-label {
     width: 100%;
     height: auto;
  }
+
+#colorbar text {
+    fill: currentColor;
+}
 
 .axis-label {
     fill: currentColor
