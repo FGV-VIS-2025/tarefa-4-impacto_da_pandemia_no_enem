@@ -602,6 +602,7 @@ html.dark-mode .x-label {
 /*---------------------------*/
 
 
+/*------Para as colunas------*/
 .layout {
     display: flex;
     flex-direction: row;
@@ -631,3 +632,4 @@ html.dark-mode .map-pane {
     flex: 3;
     overflow-x: hidden;
 }  
+/*---------------------------*/
