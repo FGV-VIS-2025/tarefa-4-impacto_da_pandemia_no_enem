@@ -8,13 +8,13 @@
 - Samuel Corrêa Lima: @samullima
 
 ### Introdução à tarefa
-A tarefa 4 da diciplina de Visualização de Dados do curso de Ciência de Dados e Inteligência Artificial tem como objetivo introduzir os alunos ao desenvolvimento de visualizações interativas e animadas, permitindo também que pensem cuidadosamente
+A tarefa 4 da disciplina de Visualização de Dados do curso de Ciência de Dados e Inteligência Artificial tem como objetivo introduzir os alunos ao desenvolvimento de visualizações interativas e animadas, permitindo também que pensem cuidadosamente
 sobre a eficácia de determinadas técnicas para a transmissão de informação.
 
 ### Introdução ao tema da tarefa
 A pandemia de COVID-19 chegou ao Brasil no início de 2020 e trouxe consigo diversos desafios, especialmente para a educação.
 Com as escolas fechadas e a implementação do ensino remoto, o acesso à educação se tornou ainda mais desigual. Muitos estudantes
-deixaram de freqientar às aulas e tiveram suas vidas impactadas pela incerteza.
+deixaram de frequentar as aulas e tiveram suas vidas impactadas pela incerteza.
 
 O Exame Nacional do Ensino Médio (ENEM) é uma prova realizada anualmente e tem como uma de suas principais funções permitir o 
 acesso dos alunos ao ensino superior. A sua edição de 2020 (realizada em 17 e 24 de janeiro de 2021) foi marcada por debates 
@@ -22,14 +22,14 @@ acerca da dificuldade de acesso a uma rotina eficiente de preparação para a pr
 dispositivos para utilizá-la.
 
 Tendo isso em vista, decidimos analisar as diferenças entre os alunos que realizaram o ENEM nas edições de 2019 (contexto pré-
-pandemia) e em 2020 (contexto durante a pandemia). As análise são focadas somente ao estado de Minas Gerais, principalmente por conta das limitações das ferramentas utilizadas para o trabalho. Dentre todos os estados, Minas Gerais foi escolhido por ser um dos
-estados mais influentes do país, sendo o 2º estado com maior população, e por sua grande variedade sócio-econômica.
+pandemia) e em 2020 (contexto durante a pandemia). As análises são focadas somente ao estado de Minas Gerais, principalmente por conta das limitações das ferramentas utilizadas para o trabalho. Dentre todos os estados, Minas Gerais foi escolhido por ser um dos
+estados mais influentes do país, sendo o 2º estado com maior população, e por sua grande variedade socioeconômica.
 
 ### Bases de Dados
 Para o desenvolvimento do trabalho foram utilizados os microdados do ENEM, o qual possui dados de todas as inscrições para a
 realização da prova em determinado ano, tais como sexo, raça/cor, faixa etária, estado civil, município, presença nas provas, nota, etc.
 
-Como desejamos analisar o contexto pré e durante a pandemia, utilizamos os **Microdados do Enem 2019** e **Microdados do Enem 2020**. Ambas as bases de dados podem ser acessados em: https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/enem.
+Como desejamos analisar o contexto pré e durante a pandemia, utilizamos os **Microdados do Enem 2019** e **Microdados do Enem 2020**. Ambas as bases de dados podem ser acessadas em: https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/enem.
 
 ### Ferramentas Utilizadas
 Para a limpeza e filtragem dos dados foi utilizada a biblioteca Pandas do Python, que permite facilmente manipular dataframes e
@@ -42,7 +42,7 @@ O resultado final do nosso projeto pode ser encontrado em: https://fgv-vis-2025.
 
 A página contém: 
 * Introdução: Uma breve introdução acerca do trabalho e como utilizá-las;
-* Projeto: Onde é possível visualizar e ineragir com as visualização desenvolvidas pelo grupo.
+* Projeto: Onde é possível visualizar e interagir com as visualização desenvolvidas pelo grupo.
 * Autores: Informações para contato de cada um dos alunos envolvidos no projeto.
 * GitHub: Acesso à página do trabalho no GitHub.
 
@@ -64,7 +64,7 @@ A segunda visualização consiste em um gráfico de barras que, a princípio, ex
 * Sexo
 * Tipo de escola
 
-Ao selecionar uma variável, o gráfico de barras será atualizado para exibir a quantidade de inscrições ocorridas em 2019 e 2020 para cada categoria da variável selecionada, formando um gráfico de barras agrupadas. Também é possível visualizar somente uma categoria específica da variável selecionada. Para isso, basta clicar na barra ou no ítem da legenda correspondente à categoria desejada.
+Ao selecionar uma variável, o gráfico de barras será atualizado para exibir a quantidade de inscrições ocorridas em 2019 e 2020 para cada categoria da variável selecionada, formando um gráfico de barras agrupadas. Também é possível visualizar somente uma categoria específica da variável selecionada. Para isso, basta clicar na barra ou no item da legenda correspondente à categoria desejada.
 
 A terceira visualização consiste em um boxplot que exibe as taxas médias por cidade de presença dos alunos nas provas do ENEM 2019 e 2020. Ao selecionar uma mesorregião no mapa, o boxplot será filtrado para exibir dados somente das cidades daquela mesorregião.
 
@@ -90,7 +90,7 @@ navegar até o topo da página.
 
 #### Gráfico de barras
 O gráfico tem como propósito permitir que o usuário analise facilmente a quantidade de pessoas que se inscreveram para o ENEM dado
-álguma variável decidida pelo usuário. Consideramos a possibilidade de que o gráfico fosse de barras empilhadas ao invés de 
+alguma variável decidida pelo usuário. Consideramos a possibilidade de que o gráfico fosse de barras empilhadas ao invés de 
 barras agrupadas, porém decidimos que agrupadas seria melhor por facilitar comparações entre o tamanho das barras.
 
 #### Boxplot
@@ -133,5 +133,10 @@ Samuel Corrêa Lima - @samullima
 - Implementação do boxplot interativo - 8h
 - Análise da média de desistências das cidades por região - 10min
 
-Além disso, todos os membros contribuíram para otimizações em todas as partes do trabalho, tais como deixar as visualizaçoes mais 
-flúidas, alterações estéticas, etc. Todos também auxiliaram na solução de problemas pontuais em todas as visualizações.
+Além disso, todos os membros contribuíram para otimizações em todas as partes do trabalho, tais como deixar as visualizações mais 
+fluídas, alterações estéticas, etc. Todos também auxiliaram na solução de problemas pontuais em todas as visualizações.
+
+### Uso de Inteligência Artificial
+Ferramentas de inteligência artificial foram utilizadas majoritariamente para pesquisa, a fim de entender de maneira rápida como
+realizar certas ações utilizando a linguagem JavaScript e a biblioteca D3 como qual parâmetro deveria ser alterarado para 
+selecionar uma paleta de cores para um gráfico, ou para encontrar rapidamente erros de implementação.
