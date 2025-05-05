@@ -163,7 +163,7 @@ Promise.all([
 
     // Atualiza o gráfico com base na região selecionada
     function barCharts(regions, column = "all", filteredCategory) {
-        let colorScale = d3.schemeCategory10; 
+        let colorScale = d3.schemeTableau10; 
         svg.selectAll(".legend").remove(); 
          
         // Filtra os dados conforme a região 
@@ -199,14 +199,12 @@ Promise.all([
         svg.append("g")
             .attr("class", "y-axis")
             .attr("transform", `translate(${margin.left},0)`)
-            .style("font-weight", "normal")
             .call(d3.axisLeft(y));
     
         svg.selectAll(".x-axis").remove();
         svg.append("g")
             .attr("class", "x-axis")
             .attr("transform", `translate(0,${height - margin.bottom})`)
-            .style("font-weight", "normal")
             .call(d3.axisBottom(x));
 
         svg.append("text")
@@ -214,7 +212,8 @@ Promise.all([
             .attr("text-anchor", "middle")
             .attr("x", widthBox / 2)
             .attr("y", heightBox - 6)
-            .text("Ano");        
+            .text("Ano")
+            .style("font-weight", "normal");        
         
         svg.append("text")
             .attr("class", "y-label")
@@ -222,7 +221,8 @@ Promise.all([
             .attr("transform", "rotate(-90)")
             .attr("x", -heightBox / 2)
             .attr("y", margin.left / 2 - 10)
-            .text("Nº de Inscrições");
+            .text("Nº de Inscrições")
+            .style("font-weight", "normal");
     
     
         // Escala para subgrupos - usa displayCategories
