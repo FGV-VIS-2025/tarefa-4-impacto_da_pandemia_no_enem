@@ -519,6 +519,10 @@ html.dark-mode .x-label {
     display: block;
 }
 
+.heatmap-wrapper h3 {
+    margin-left: 105px
+}
+
 #heatmap2019, 
 #heatmap2020 {
     width: 100%;
@@ -603,33 +607,35 @@ html.dark-mode .x-label {
 
 
 /*------Para as colunas------*/
-.layout {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    padding: 20px;
-}
-  
-/* Coluna do mapa */
-.map-pane {
-    flex: 1;
-    max-width: 700px;
-    position: sticky;
-    top: 100px;
-    align-self: flex-start;
-    background-color: #f8f8f8;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
-}
+@media (min-width: 768px){
+    .layout {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        padding: 20px;
+    }
+    
+    /* Coluna do mapa */
+    .map-pane {
+        flex: 1;
+        max-width: 700px;
+        position: sticky;
+        top: 100px;
+        align-self: flex-start;
+        background-color: #f8f8f8;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
 
-html.dark-mode .map-pane {
-    background-color: #142f51;
+    html.dark-mode .map-pane {
+        background-color: #142f51;
+    }
+    
+    /* Coluna dos gráficos */
+    .charts-pane {
+        flex: 2;
+        overflow-x: hidden;
+    }  
 }
-  
-/* Coluna dos gráficos */
-.charts-pane {
-    flex: 3;
-    overflow-x: hidden;
-}  
 /*---------------------------*/

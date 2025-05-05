@@ -847,7 +847,7 @@ Promise.all([
             g.append("text")
                 .attr("class","axis-label")
                 .attr("x", width / 2)
-                .attr("y", height + margin.bottom + 30)
+                .attr("y", height + marginHeatmap.bottom/2 + 28)
                 .attr("text-anchor", "middle")
                 .text(selectedText1);
 
@@ -855,7 +855,7 @@ Promise.all([
                 .attr("class","axis-label")
                 .attr("transform", "rotate(-90)")
                 .attr("x", -height / 2)
-                .attr("y", -margin.left - 25)
+                .attr("y", -marginHeatmap.left)
                 .attr("text-anchor", "middle")
                 .text(selectedText2);
             })
