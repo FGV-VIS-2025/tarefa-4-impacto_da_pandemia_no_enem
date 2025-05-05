@@ -617,7 +617,7 @@ Promise.all([
         const height = 20;
 
         const svg = container.append("svg")
-            .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+            .attr("viewBox", `0 35 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
             .attr("preserveAspectRatio", "xMidYMid meet")
 
         const defs = svg.append("defs")

@@ -504,7 +504,7 @@ html.dark-mode .x-label {
     justify-content: center;
     align-items: flex-start;
     gap: 2rem;
-    margin: 2rem auto;
+    margin: 0.5rem auto;
     max-width: 1000px;
 }
  
