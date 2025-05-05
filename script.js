@@ -70,6 +70,7 @@ const LOOKUP = {
 /* Alteração para outros temas */
 const themeSelect = document.getElementById('theme-select');
 
+// Aplicação do tema escuro
 function applyTheme(theme) {
     const root = document.documentElement;
     root.classList.remove('dark-mode');
@@ -110,7 +111,7 @@ window.addEventListener("DOMContentLoaded", () => {
 /* Margem padrão */
 const GLOBAL_MARGIN = { top: 30, right: 30, bottom: 50, left: 80 };
   
-
+  
 /* Gráficos interativos */
 
 // Carreaga os arquivos CSV de 2019 e 2020
@@ -602,6 +603,7 @@ Promise.all([
         const container = d3.select("#colorbar");
         container.selectAll("*").remove();
 
+        // Define proporções
         const margin = { ...GLOBAL_MARGIN, left: 120, bottom: 80 };
         const width = 400
         const height = 20;
@@ -620,6 +622,7 @@ Promise.all([
         const [minVal, maxVal] = colorscale.domain();
         const stops = d3.range(n).map(i => minVal + (maxVal - minVal) * i / (n - 1));
 
+        // Adiciona os stops ao gradiente
         grads.selectAll("stop")
             .data(stops)
             .enter()
@@ -627,6 +630,7 @@ Promise.all([
                 .attr("offset", (d, i) => `${100*i/(n-1)}%`)
                 .attr("stop-color", d => colorscale(d));
 
+        // Adiciona o retângulo com o gradiente
         svg.append("rect")
             .attr("x", margin.left)
             .attr("y", margin.top)
@@ -638,6 +642,8 @@ Promise.all([
             .domain(colorscale.domain())
             .range([0, width]);
 
+
+        // Adiciona o eixo
         const axis = d3.axisBottom(legendScale)
             .ticks(5)
             .tickFormat(d3.format("~s"));
@@ -646,6 +652,7 @@ Promise.all([
             .attr("transform", `translate(${margin.left},${height + margin.top})`)
             .call(axis);
 
+        // Adiciona o rótulo do eixo
         svg.append("text")
             .attr("class", "colorbar-label")
             .attr("x", margin.left + width/2) 
@@ -673,9 +680,11 @@ Promise.all([
         const width = fullWidth - marginHeatmap.left - marginHeatmap.right;
         const height = fullHeight - marginHeatmap.top - marginHeatmap.bottom;
 
+        // Filtra por região
         const filteredData2019 = (regions.length === 0) ? data2019 : data2019.filter(d => regions.includes(d.MESORREGIAO));
         const filteredData2020 = (regions.length === 0) ? data2020 : data2020.filter(d => regions.includes(d.MESORREGIAO));
 
+        // Armazena os dados para cada combinação de variáveis
         let counts2019 = {};
         filteredData2019.forEach(d => {
             const variable1 = d[selected1];
@@ -694,24 +703,29 @@ Promise.all([
             counts2020[key] = (counts2020[key] || 0) + 1;
         });
 
+        // Define o domínio da escala de cores
         let maxCount2019 = d3.max(Object.values(counts2019));
         let maxCount2020 = d3.max(Object.values(counts2020));
 
-        const customBlues = t => d3.interpolateBlues(0.1 + 0.9 * t);
+        const customBlues = t => d3.interpolateBlues(0.1 + 0.9 * t); // Removendo tons muito claros
 
         const color = d3.scaleSequential()
             .interpolator(customBlues)
             .domain([0, d3.max(Object.values([maxCount2019, maxCount2020]))]);
             
+        // Bases de dados por anos
         filteredDataYears = {2019: filteredData2019, 2020: filteredData2020};
 
+        // Cria o heatmaps
         years.forEach(year => {
             const cats1 = [...new Set(filteredDataYears[year].map(d => d[selected1]))].filter(d => d !== "").sort();
             const cats2 = [...new Set(filteredDataYears[year].map(d => d[selected2]))].filter(d => d !== "").sort();
 
+            // Converte os valores para os rótulos correspondentes
             const map1 = LOOKUP[selected1] || (d=>d);
             const map2 = LOOKUP[selected2] || (d=>d);
 
+            // Realiza as contagens para cada combinação de variáveis
             const fullGrid = []
             if (year === 2019) {
                 cats1.forEach(v1 => {
@@ -754,7 +768,6 @@ Promise.all([
                 svgHeatmap = d3.select("#heatmap2019")
                     .attr("width", "100%")
                     .attr("height", "auto")
-                    //.attr("viewBox", `-30 0 ${fullWidth} ${fullHeight}`)
                     .attr("viewBox", `-50 0 ${fullWidth + 50} ${fullHeight}`)
                     .attr("preserveAspectRatio", "xMidYMid meet");
             }
@@ -762,7 +775,6 @@ Promise.all([
                 svgHeatmap = d3.select("#heatmap2020")
                     .attr("width", "100%")
                     .attr("height", "auto")
-                    //.attr("viewBox", `-30 0 ${fullWidth} ${fullHeight}`)
                     .attr("viewBox", `-50 0 ${fullWidth + 50} ${fullHeight}`)
                     .attr("preserveAspectRatio", "xMidYMid meet");
 
@@ -773,6 +785,7 @@ Promise.all([
             const g = svgHeatmap.append("g")
                 .attr("transform", `translate(${marginHeatmap.left},${marginHeatmap.top})`);
 
+            // Adiciona os retângulos e o tooltip
             g.selectAll("rect")
                 .data(fullGrid, d => d.v1 + "-" + d.v2)
                 .enter()
@@ -810,28 +823,27 @@ Promise.all([
             const selectedText1 = document.getElementById("variable1").options[document.getElementById("variable1").selectedIndex].text;
             const selectedText2 = document.getElementById("variable2").options[document.getElementById("variable2").selectedIndex].text;
     
+            // Eixo X
             g.append("g")
                 .attr("class", "x-axis")
                 .attr("transform", `translate(0,${height})`)
-                //.attr("transform", `translate(0,${height - 10})`)
                 .call(xAxis)
                 .selectAll("text")
                     .attr("transform", "rotate(-45)")
                     .attr("dx", "-0.6em")
                     .attr("dy", "0.25em")
-                    // .attr("dx", "-0.5em") 
-                    // .attr("dy", "0.15em")
                     .style("text-anchor", "end");
 
+            // Eixo Y
             g.append("g")
                 .attr("class", "y-axis")
                 .attr("transform", `translate(0,0)`)
                 .call(yAxis)
                 .selectAll("text")
                     .attr("dx", "-0.6em")
-                    //.attr("dx", "-0.4em")
                     .style("text-anchor", "end");
                     
+            // Rótulos dos eixos
             g.append("text")
                 .attr("class","axis-label")
                 .attr("x", width / 2)
