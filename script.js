@@ -198,12 +198,14 @@ Promise.all([
         svg.append("g")
             .attr("class", "y-axis")
             .attr("transform", `translate(${margin.left},0)`)
+            .style("font-weight", "normal")
             .call(d3.axisLeft(y));
     
         svg.selectAll(".x-axis").remove();
         svg.append("g")
             .attr("class", "x-axis")
             .attr("transform", `translate(0,${height - margin.bottom})`)
+            .style("font-weight", "normal")
             .call(d3.axisBottom(x));
 
         svg.append("text")
@@ -285,11 +287,14 @@ Promise.all([
 
         const title = d3.select("#barchart-title");
         if (regions.length === 0) {
-            title.text(" Quantidade de Participantes do ENEM em Minas Gerais")
+            title.text(" Quantidade de inscrições no ENEM em Minas Gerais pela variável selecionada")
         }
+        else if (regions.length === 1) {
+            title.text(" Quantidade de Inscrições no ENEM na região selecionada pela variável selecionada")
+        }  
         else {
-            title.text(" Quantidade de Inscrições do ENEM na(s) região(ões) selecionada(s)")
-        }    
+            title.text(" Quantidade de Inscrições do ENEM nas regiões selecionadas pela variável selecionada")
+        }   
     }
     
     function createLegend(colorScale, column, regions, allCategories, currentFilter) {
@@ -593,8 +598,11 @@ Promise.all([
         if (regions.length === 0) {
             title.text("Distribuição da Média de Presença por Cidade em Minas Gerais")
         }
+        else if (regions.length === 1) {
+            title.text("Distribuição da Média de Presença por Cidade para a região selecionada")
+        }  
         else {
-            title.text("Distribuição da Média de Presença por Cidade para a(s) região(ões) selecionada(s)")
+            title.text("Distribuição da Média de Presença por Cidade para as regiões selecionadas")
         }    
     }
 
@@ -881,6 +889,7 @@ Promise.all([
         updateHeatMap([]);
         updateHeatMap([]);
         
+        document.getElementById("selected-regions").textContent = "";
     });
     
     d3.select("#reset-button").style("display", "block");
@@ -961,6 +970,13 @@ Promise.all([
                 boxPlot(selectedRegions);
                 updateHeatMap(selectedRegions, 2019);
                 updateHeatMap(selectedRegions, 2020);
+
+                if (selectedRegions.length > 0) {
+                    document.getElementById("selected-regions").innerHTML =
+                      `<div class="selected-title">${selectedRegions.join(", <br>").toLowerCase()}</div>`;
+                } else {
+                    document.getElementById("selected-regions").innerHTML = "";
+                  }
             });
     });
 });

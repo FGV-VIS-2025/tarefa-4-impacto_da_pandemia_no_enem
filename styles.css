@@ -288,9 +288,11 @@ html.dark-mode
 #control-panel {
     text-align: center;
     margin-top: 20px;
+    max-width: 700px;
 }
 
 #reset-button {
+    width: 100%;
     padding: 6px 12px;
     background-color: #224fa386; 
     color: #fff;
@@ -302,7 +304,6 @@ html.dark-mode
 }
 
 #reset-button:hover {
-    /* background-color: #e65c00; */
     transform: scale(1.05);
 }
 
@@ -614,12 +615,15 @@ html.dark-mode .x-label {
     flex: 1;
     max-width: 700px;
     position: sticky;
-    top: 100px;
     align-self: flex-start;
     background-color: #f8f8f8;
-    padding: 15px;
+    padding: 5px;
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+.map-pane > *:first-child {
+    margin-top: 5px;
 }
 
 html.dark-mode .map-pane {
@@ -628,6 +632,15 @@ html.dark-mode .map-pane {
   
 /* Coluna dos gráficos */
 .charts-pane {
-    flex: 3;
+    flex: 2;
     overflow-x: hidden;
 }  
+
+#selected-regions {
+    margin-top: 5px;
+}
+
+.selected-title {
+    font-size: 12px;
+    text-transform: capitalize;
+}
