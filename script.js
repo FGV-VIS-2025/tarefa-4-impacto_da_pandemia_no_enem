@@ -854,7 +854,7 @@ Promise.all([
             g.append("text")
                 .attr("class","axis-label")
                 .attr("x", width / 2)
-                .attr("y", height + marginHeatmap.bottom/2 + 28)
+                .attr("y", height + marginHeatmap.bottom/2 + 35)
                 .attr("text-anchor", "middle")
                 .text(selectedText1);
 
