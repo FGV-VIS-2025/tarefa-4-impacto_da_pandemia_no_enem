@@ -222,7 +222,7 @@ Promise.all([
             .attr("transform", "rotate(-90)")
             .attr("x", -heightBox / 2)
             .attr("y", margin.left / 2 - 10)
-            .text("Taxa de Presença");
+            .text("Nº de Inscrições");
     
     
         // Escala para subgrupos - usa displayCategories
