@@ -650,7 +650,6 @@ Promise.all([
             .domain(colorscale.domain())
             .range([0, width]);
 
-
         // Adiciona o eixo
         const axis = d3.axisBottom(legendScale)
             .ticks(5)
@@ -943,7 +942,7 @@ Promise.all([
             .attr("fill", "#69b3a2")
             .attr("stroke", "#333")
             .on("mouseover", function (event, d) {
-                d3.select(this).transition().duration(300).attr("fill", "green");
+                d3.select(this).transition().duration(300).attr("fill", "#007400");
 
                 tooltip.transition().duration(600).style("opacity", 1);
                 tooltip.html(`<strong>${d.properties.nm_meso}</strong>`)
